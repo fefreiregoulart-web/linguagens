@@ -1,0 +1,2358 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDITAL.26 — Hub Analítico de Linguagens e Códigos</title>
+    <!-- Fonts: Plus Jakarta Sans & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        alabaster: '#F8F9FA',
+                        surface: '#FFFFFF',
+                        secondarySurface: '#F2F3F5',
+                        inkPrimary: '#121417',
+                        inkSecondary: '#6E737D',
+                        acid: '#DCFA50',
+                        hairline: '#E4E6EB',
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    borderRadius: {
+                        '3xl': '1.75rem',
+                        '4xl': '2.25rem',
+                        '5xl': '2.75rem',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Editorial & Spring Motion Styles */
+        body {
+            background-color: #F8F9FA;
+            color: #121417;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .font-mono-custom {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .spring-transition {
+            transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .spring-transform {
+            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .display-title {
+            font-size: clamp(2.3rem, 4.5vw, 4.2rem);
+            font-weight: 500;
+            letter-spacing: -0.035em;
+            line-height: 1.08;
+        }
+
+        .display-subtitle {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            line-height: 1.4;
+            letter-spacing: -0.015em;
+        }
+
+        /* Subtle grid background for editorial dark card */
+        .bg-grid-pattern {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px);
+            background-size: 16px 16px;
+        }
+
+        /* Inverted notch utility simulation */
+        .notch-corner {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+        }
+
+        /* Hide scrollbars but preserve functionality */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Collapsible accordion content height animation */
+        .accordion-content {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .accordion-content.open {
+            grid-template-rows: 1fr;
+        }
+        .accordion-inner {
+            overflow: hidden;
+        }
+
+        /* Tooltip animation */
+        .pin-pulse {
+            box-shadow: 0 0 0 0 rgba(220, 250, 80, 0.7);
+            animation: pulse-ring 2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 0 rgba(220, 250, 80, 0.7); }
+            70% { box-shadow: 0 0 0 14px rgba(220, 250, 80, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(220, 250, 80, 0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-acid selection:text-inkPrimary">
+
+    <!-- Top Announcement Bar -->
+    <div class="bg-inkPrimary text-white text-xs font-mono-custom py-2 px-4 text-center flex items-center justify-center gap-3 border-b border-white/10">
+        <span class="inline-block w-2 h-2 rounded-full bg-acid animate-pulse"></span>
+        <span>EDITAL 2026 // COBERTURA COMPLETA DE LINGUAGENS, CÓDIGOS E SUAS TECNOLOGIAS</span>
+        <span class="hidden md:inline text-inkSecondary">•</span>
+        <span class="hidden md:inline text-acid/90">18 SUB-BLOCOS ANALÍTICOS</span>
+    </div>
+
+    <!-- 1. MINIMALIST 3-ZONE NAVBAR -->
+    <header class="sticky top-0 z-40 bg-alabaster/90 backdrop-blur-md border-b border-hairline py-3.5 px-4 lg:px-8 spring-transition">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+            
+            <!-- Left Zone: Links -->
+            <nav class="flex items-center gap-1 sm:gap-6 text-sm font-medium">
+                <button onclick="scrollToSection('hero')" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full hover:bg-secondarySurface text-inkPrimary spring-transform">
+                    <span class="w-1.5 h-1.5 rounded-full bg-acid"></span>
+                    <span>Índice</span>
+                </button>
+                <button onclick="scrollToSection('materias')" class="px-3 py-1.5 rounded-full hover:bg-secondarySurface text-inkSecondary hover:text-inkPrimary spring-transform">
+                    Matérias
+                </button>
+                <button onclick="openQuizModal()" class="hidden sm:flex items-center gap-1 px-3 py-1.5 rounded-full hover:bg-secondarySurface text-inkSecondary hover:text-inkPrimary spring-transform">
+                    Simulado
+                    <span class="text-[10px] font-mono-custom px-1.5 py-0.5 rounded-full bg-acid text-inkPrimary font-bold ml-1">8 Q</span>
+                </button>
+            </nav>
+
+            <!-- Center Zone: Graphic Mark + Logo -->
+            <div class="flex items-center gap-2 cursor-pointer" onclick="scrollToSection('hero')">
+                <div class="w-7 h-7 rounded-lg bg-inkPrimary flex items-center justify-center text-acid font-bold text-xs shadow-sm">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M4 6h16M4 12h10M4 18h14" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <span class="font-bold text-lg tracking-tight font-mono-custom">EDITAL<span class="text-inkSecondary">.26</span></span>
+            </div>
+
+            <!-- Right Zone: Dropdown & CTA -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <select id="subjectNavSelect" onchange="navigateToSubject(this.value)" class="text-xs sm:text-sm font-medium bg-surface border border-hairline rounded-full px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-inkPrimary cursor-pointer text-inkPrimary">
+                    <option value="" disabled selected>Ir para matéria...</option>
+                    <option value="lingua">Análise Linguística</option>
+                    <option value="lit">Literatura</option>
+                    <option value="ing">Inglês Nível 2</option>
+                    <option value="esp">Espanhol</option>
+                    <option value="artes">Artes</option>
+                    <option value="edfisica">Educação Física</option>
+                </select>
+
+                <button onclick="openQuizModal()" class="flex items-center gap-1.5 text-xs font-semibold bg-acid hover:bg-[#d2f240] text-inkPrimary border border-inkPrimary/20 px-3.5 py-1.5 rounded-full shadow-sm spring-transform">
+                    <span>Simulado Relâmpago</span>
+                    <span class="text-sm">⚡</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-12 sm:space-y-16">
+
+        <!-- HOME VIEW (Bento Grid, Statement, Accordion, Index) -->
+        <div id="homeView" class="space-y-12 sm:space-y-16">
+
+            <!-- 2. HERO SECTION (ASYMMETRIC BENTO GRID) -->
+            <section id="hero" class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
+                
+                <!-- Left Block (Solid Acid Yellow, 28px radius) -->
+                <div class="lg:col-span-7 bg-acid border border-inkPrimary/10 rounded-[28px] p-6 sm:p-9 flex flex-col justify-between relative overflow-hidden shadow-sm spring-transform">
+                    <!-- Subtle background graphic watermark -->
+                    <div class="absolute -right-8 -bottom-8 opacity-10 pointer-events-none select-none font-mono-custom text-9xl font-extrabold text-inkPrimary">
+                        2026
+                    </div>
+
+                    <div class="space-y-6 relative z-10">
+                        <div class="inline-flex items-center gap-2 bg-inkPrimary text-white text-xs font-mono-custom px-3 py-1 rounded-full">
+                            <span class="w-2 h-2 rounded-full bg-acid"></span>
+                            <span>GUIA DEFINITIVO // TÓPICOS DE ALTO RENDIMENTO</span>
+                        </div>
+
+                        <h1 class="display-title font-medium text-inkPrimary tracking-tight">
+                            Domine toda a prova de 
+                            <span class="inline-flex items-center align-middle px-3 py-1 my-1 bg-inkPrimary text-acid rounded-full text-2xl sm:text-3xl font-mono-custom">
+                                <svg class="w-6 h-6 inline mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                                Linguagens
+                            </span>
+                            sem enrolação.
+                        </h1>
+
+                        <p class="text-inkPrimary/80 text-base sm:text-lg font-normal max-w-xl leading-relaxed">
+                            Resumos ultradiretos, regência sem mistério, análise literária comparativa, tempos verbais e matrizes visuais organizados em blocos sintéticos.
+                        </p>
+
+                        <!-- Live Interactive Search Bar -->
+                        <div class="relative max-w-lg mt-4">
+                            <div class="flex items-center bg-surface border border-inkPrimary/20 rounded-full shadow-md p-1.5 pl-4 focus-within:ring-2 focus-within:ring-inkPrimary spring-transition">
+                                <svg class="w-5 h-5 text-inkSecondary mr-2 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                </svg>
+                                <input type="text" id="heroSearchInput" oninput="handleSearch(this.value)" placeholder="Buscar tópico, regra, verbo ou autor..." class="w-full bg-transparent text-sm text-inkPrimary placeholder-inkSecondary focus:outline-none">
+                                <button onclick="triggerSearchJump()" class="w-9 h-9 rounded-full bg-inkPrimary text-acid flex items-center justify-center shrink-0 hover:bg-inkPrimary/80 spring-transform" title="Buscar">
+                                    →
+                                </button>
+                            </div>
+
+                            <!-- Search Live Results Dropdown -->
+                            <div id="searchResultsDropdown" class="hidden absolute top-full left-0 right-0 mt-2 bg-surface border border-hairline rounded-2xl shadow-2xl z-50 max-h-72 overflow-y-auto p-2 divide-y divide-hairline font-sans">
+                                <!-- Dynamic Search Results inserted here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar Component -->
+                    <div class="pt-8 mt-6 border-t border-inkPrimary/15 relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div class="flex items-center gap-3">
+                            <div class="flex -space-x-2 overflow-hidden">
+                                <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-inkPrimary text-acid text-xs font-mono-custom font-bold border-2 border-acid">AL</span>
+                                <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-inkPrimary text-acid text-xs font-mono-custom font-bold border-2 border-acid">LIT</span>
+                                <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-inkPrimary text-acid text-xs font-mono-custom font-bold border-2 border-acid">ING</span>
+                                <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-inkPrimary text-acid text-xs font-mono-custom font-bold border-2 border-acid">ESP</span>
+                                <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-inkPrimary text-acid text-xs font-mono-custom font-bold border-2 border-acid">ART</span>
+                                <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-inkPrimary text-acid text-xs font-mono-custom font-bold border-2 border-acid">EF</span>
+                            </div>
+                            <div class="text-xs font-mono-custom font-semibold text-inkPrimary">
+                                Status da Revisão
+                            </div>
+                        </div>
+
+                        <div class="w-full sm:w-auto flex items-center gap-3">
+                            <div class="w-full sm:w-36 bg-inkPrimary/15 rounded-full h-2.5 overflow-hidden">
+                                <div id="heroProgressBar" class="bg-inkPrimary h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                            </div>
+                            <span id="heroProgressText" class="text-xs font-bold font-mono-custom text-inkPrimary shrink-0">0/18 revisados</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Block (High-Craft Editorial Visual Canvas with Pins) -->
+                <div class="lg:col-span-5 bg-inkPrimary text-white rounded-[28px] p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden min-h-[420px] bg-grid-pattern shadow-sm">
+                    
+                    <!-- Top Glassmorphism Mini-Card -->
+                    <div class="flex items-center justify-between border border-white/15 bg-white/10 backdrop-blur-md px-4 py-2.5 rounded-2xl z-10">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-acid animate-ping"></span>
+                            <span class="text-xs font-mono-custom text-white/90">6 Disciplinas • 18 Sub-blocos</span>
+                        </div>
+                        <button onclick="openAllSubjectsView()" class="w-7 h-7 rounded-full bg-acid text-inkPrimary font-bold text-xs flex items-center justify-center hover:scale-105 spring-transform">
+                            →
+                        </button>
+                    </div>
+
+                    <!-- Interactive Floating Interactive Pins Canvas -->
+                    <div class="relative my-8 h-48 w-full border border-dashed border-white/20 rounded-2xl p-4 flex items-center justify-center">
+                        <span class="text-xs font-mono-custom text-white/30 tracking-widest uppercase">Matriz de Conexões Analíticas</span>
+
+                        <!-- Floating Pin 1: Regra do WERE -->
+                        <div onclick="navigateToSubBlock('ing-2')" class="absolute top-4 left-6 bg-surface text-inkPrimary px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg cursor-pointer hover:bg-acid hover:scale-105 spring-transform flex items-center gap-1.5 z-20">
+                            <span class="w-2 h-2 rounded-full bg-acid pin-pulse"></span>
+                            <span>Regra do WERE</span>
+                        </div>
+
+                        <!-- Floating Pin 2: Verbos Camaleões -->
+                        <div onclick="navigateToSubBlock('lingua-3')" class="absolute top-12 right-6 bg-surface text-inkPrimary px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg cursor-pointer hover:bg-acid hover:scale-105 spring-transform flex items-center gap-1.5 z-20">
+                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                            <span>Verbos Camaleões</span>
+                        </div>
+
+                        <!-- Floating Pin 3: Dom Casmurro -->
+                        <div onclick="navigateToSubBlock('lit-4')" class="absolute bottom-6 left-10 bg-surface text-inkPrimary px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg cursor-pointer hover:bg-acid hover:scale-105 spring-transform flex items-center gap-1.5 z-20">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                            <span>Dom Casmurro</span>
+                        </div>
+
+                        <!-- Floating Pin 4: Bauhaus -->
+                        <div onclick="navigateToSubBlock('artes-2')" class="absolute bottom-8 right-8 bg-surface text-inkPrimary px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg cursor-pointer hover:bg-acid hover:scale-105 spring-transform flex items-center gap-1.5 z-20">
+                            <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                            <span>Bauhaus</span>
+                        </div>
+
+                        <!-- Connecting lines graphic in SVG -->
+                        <svg class="absolute inset-0 w-full h-full opacity-20 pointer-events-none" viewBox="0 0 400 200">
+                            <path d="M 60 30 Q 150 80 320 50 T 100 150 T 300 140" fill="none" stroke="#DCFA50" stroke-width="1.5" stroke-dasharray="4,4"/>
+                        </svg>
+                    </div>
+
+                    <!-- Inverted Architectural Notch Bottom Info -->
+                    <div class="flex items-end justify-between pt-4 border-t border-white/10 z-10">
+                        <div>
+                            <p class="text-xs font-mono-custom text-white/50 uppercase tracking-wider">Síntete Direta // 2026</p>
+                            <p class="text-sm font-medium text-white/90">Foco absoluto na matriz da prova</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="scrollToSection('materias')" class="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-full text-xs font-medium spring-transform border border-white/10">
+                                Explorar Matérias ↓
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 3. CENTRAL STATEMENT WITH ORBITAL THUMBNAILS -->
+            <section class="py-8 px-4 text-center relative max-w-4xl mx-auto">
+                
+                <!-- Orbital Visual Thumbnails -->
+                <div class="hidden sm:block absolute top-0 left-4 w-12 h-12 rounded-full bg-acid/30 border border-acid p-1 text-xs flex items-center justify-center font-bold text-inkPrimary animate-bounce">
+                    Sintaxe
+                </div>
+                <div class="hidden sm:block absolute bottom-2 right-4 w-14 h-14 rounded-full bg-inkPrimary text-acid border border-white/20 p-1 text-xs flex items-center justify-center font-bold font-mono-custom">
+                    Eça 1878
+                </div>
+                <div class="hidden md:block absolute top-6 right-12 w-10 h-10 rounded-full bg-secondarySurface border border-hairline text-[10px] flex items-center justify-center font-bold text-inkSecondary">
+                    Bauhaus
+                </div>
+
+                <div class="space-y-4">
+                    <span class="inline-block text-xs font-mono-custom tracking-widest text-inkSecondary uppercase">
+                        • ESTRUTURA EDITORIAL DE ALTO IMPACTO •
+                    </span>
+                    <h2 class="display-subtitle text-2xl sm:text-4xl font-medium text-inkPrimary tracking-tight">
+                        Estudo analítico em tópicos diretos.<br class="hidden sm:inline"/> Zero enrolação, foco total na questão.
+                    </h2>
+                    <p class="text-inkSecondary max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
+                        Esqueça apostilas gigantescas. Aqui toda a matéria de Linguagens é sintetizada em fórmulas de regência, linhas do tempo literárias, pegadinhas gramaticais e estruturas prontas para consulta rápida.
+                    </p>
+                    <div class="flex items-center justify-center gap-4 pt-2">
+                        <button onclick="scrollToSection('materias')" class="px-6 py-3 rounded-full bg-inkPrimary text-white font-medium text-sm hover:bg-inkPrimary/90 spring-transform flex items-center gap-2">
+                            <span>Explorar Disciplinas</span>
+                            <span>→</span>
+                        </button>
+                        <button onclick="openQuizModal()" class="px-6 py-3 rounded-full bg-surface border border-hairline text-inkPrimary font-medium text-sm hover:bg-secondarySurface spring-transform">
+                            Iniciar Simulado
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. MODULAR 4-BLOCK TYPOGRAPHIC STRIP -->
+            <section class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+                
+                <!-- Block 1: Neutral Light -->
+                <div class="bg-secondarySurface border border-hairline rounded-[32px] p-6 flex flex-col justify-between h-40 sm:h-48 spring-transform hover:-translate-y-1">
+                    <span class="font-mono-custom text-xs text-inkSecondary">01 // CONCEITO</span>
+                    <div>
+                        <span class="text-3xl sm:text-4xl font-light text-inkPrimary tracking-tight block">Sintetize</span>
+                        <span class="text-xs text-inkSecondary mt-1 block">Esquemas visuais e regras em fórmula</span>
+                    </div>
+                </div>
+
+                <!-- Block 2: Editorial Dark Slate -->
+                <div class="bg-inkPrimary text-white rounded-[32px] p-6 flex flex-col justify-between h-40 sm:h-48 bg-grid-pattern spring-transform hover:-translate-y-1">
+                    <span class="font-mono-custom text-xs text-acid">02 // PROVA</span>
+                    <div>
+                        <span class="text-3xl sm:text-4xl font-light text-white tracking-tight block">Analise</span>
+                        <span class="text-xs text-white/60 mt-1 block">Pegadinhas da banca desarmadas</span>
+                    </div>
+                </div>
+
+                <!-- Block 3: Electric Lime -->
+                <div class="bg-acid border border-inkPrimary/10 rounded-[32px] p-6 flex flex-col justify-between h-40 sm:h-48 spring-transform hover:-translate-y-1">
+                    <span class="font-mono-custom text-xs text-inkPrimary">03 // RITMO</span>
+                    <div class="flex items-end justify-between">
+                        <span class="text-4xl sm:text-6xl font-light text-inkPrimary leading-none">→</span>
+                        <span class="text-xs font-bold text-inkPrimary font-mono-custom uppercase tracking-wider">Acelere</span>
+                    </div>
+                </div>
+
+                <!-- Block 4: Editorial Visual -->
+                <div class="bg-hairline rounded-[32px] p-6 flex flex-col justify-between h-40 sm:h-48 relative overflow-hidden spring-transform hover:-translate-y-1">
+                    <div class="absolute inset-0 opacity-20 bg-gradient-to-tr from-inkPrimary to-transparent"></div>
+                    <span class="font-mono-custom text-xs text-inkPrimary z-10">04 // RESULTADO</span>
+                    <div class="z-10">
+                        <span class="text-3xl sm:text-4xl font-medium text-inkPrimary tracking-tight block">Domine</span>
+                        <span class="text-xs text-inkPrimary/70 mt-1 block">Gabarite a prova de Linguagens</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. 4-CARD HORIZONTAL EXPANDING ACCORDION -->
+            <section class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-inkPrimary font-mono-custom">EIXOS DE DESTAQUE // TAP PARA EXPANDIR</h3>
+                    <span class="text-xs font-mono-custom text-inkSecondary">4 PILARES DA PROVA</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    
+                    <!-- Card 1 -->
+                    <div onclick="navigateToSubject('lingua')" class="group bg-surface border border-hairline hover:border-inkPrimary/30 rounded-2xl p-6 flex flex-col justify-between h-64 cursor-pointer spring-transform hover:shadow-lg">
+                        <div class="flex justify-between items-start">
+                            <span class="px-2.5 py-1 rounded-full bg-secondarySurface text-xs font-mono-custom font-semibold text-inkPrimary">GRAMÁTICA</span>
+                            <span class="w-8 h-8 rounded-full bg-acid text-inkPrimary font-bold flex items-center justify-center text-sm group-hover:scale-110 spring-transform">→</span>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-medium text-inkPrimary group-hover:text-inkPrimary">Sintaxe & Regência</h4>
+                            <p class="text-xs text-inkSecondary mt-2 line-clamp-2">Regência Nominal, Verbal, Verbos Camaleões e a gangorra de Lembrar/Esquecer.</p>
+                            <span class="inline-block text-[11px] font-mono-custom text-inkPrimary/60 mt-3">4 Sub-blocos • 100% Prático</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div onclick="navigateToSubject('lit')" class="group bg-surface border border-hairline hover:border-inkPrimary/30 rounded-2xl p-6 flex flex-col justify-between h-64 cursor-pointer spring-transform hover:shadow-lg">
+                        <div class="flex justify-between items-start">
+                            <span class="px-2.5 py-1 rounded-full bg-secondarySurface text-xs font-mono-custom font-semibold text-inkPrimary">LITERATURA</span>
+                            <span class="w-8 h-8 rounded-full bg-acid text-inkPrimary font-bold flex items-center justify-center text-sm group-hover:scale-110 spring-transform">→</span>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-medium text-inkPrimary">Realismo PT & BR</h4>
+                            <p class="text-xs text-inkSecondary mt-2 line-clamp-2">Conferências do Cassino, Eça de Queirós, Machado de Assis e análise de Dom Casmurro.</p>
+                            <span class="inline-block text-[11px] font-mono-custom text-inkPrimary/60 mt-3">4 Sub-blocos • Linha do Tempo</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div onclick="navigateToSubject('ing')" class="group bg-surface border border-hairline hover:border-inkPrimary/30 rounded-2xl p-6 flex flex-col justify-between h-64 cursor-pointer spring-transform hover:shadow-lg">
+                        <div class="flex justify-between items-start">
+                            <span class="px-2.5 py-1 rounded-full bg-secondarySurface text-xs font-mono-custom font-semibold text-inkPrimary">IDIOMAS</span>
+                            <span class="w-8 h-8 rounded-full bg-acid text-inkPrimary font-bold flex items-center justify-center text-sm group-hover:scale-110 spring-transform">→</span>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-medium text-inkPrimary">Inglês & Espanhol</h4>
+                            <p class="text-xs text-inkSecondary mt-2 line-clamp-2">Conditionals, Regra do Were, Past Perfect e os 4 Pretéritos com particípios irregulares.</p>
+                            <span class="inline-block text-[11px] font-mono-custom text-inkPrimary/60 mt-3">6 Sub-blocos • Fórmulas</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div onclick="navigateToSubject('artes')" class="group bg-surface border border-hairline hover:border-inkPrimary/30 rounded-2xl p-6 flex flex-col justify-between h-64 cursor-pointer spring-transform hover:shadow-lg">
+                        <div class="flex justify-between items-start">
+                            <span class="px-2.5 py-1 rounded-full bg-secondarySurface text-xs font-mono-custom font-semibold text-inkPrimary">ARTES & EF</span>
+                            <span class="w-8 h-8 rounded-full bg-acid text-inkPrimary font-bold flex items-center justify-center text-sm group-hover:scale-110 spring-transform">→</span>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-medium text-inkPrimary">Vanguardas & Corpo</h4>
+                            <p class="text-xs text-inkSecondary mt-2 line-clamp-2">Cubismo, Futurismo, Bauhaus ("A forma segue a função") e fisiologia muscular.</p>
+                            <span class="inline-block text-[11px] font-mono-custom text-inkPrimary/60 mt-3">4 Sub-blocos • Conceitos Claves</span>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 5. INTERACTIVE EDITORIAL INDEX LIST (ALL 6 SUBJECTS) -->
+            <section id="materias" class="space-y-6 pt-6">
+                
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-hairline pb-4">
+                    <div>
+                        <span class="text-xs font-mono-custom text-inkSecondary uppercase tracking-widest">• ÍNDICE COMPLETO •</span>
+                        <h3 class="text-2xl font-medium text-inkPrimary">Índice de Disciplinas</h3>
+                    </div>
+                    <p class="text-xs text-inkSecondary font-mono-custom">
+                        Clique em uma matéria para abrir os sub-blocos e iniciar os estudos
+                    </p>
+                </div>
+
+                <!-- Index Table Rows -->
+                <div class="bg-surface border border-hairline rounded-2xl divide-y divide-hairline shadow-sm overflow-hidden">
+                    
+                    <!-- Row 1: Análise Linguística -->
+                    <div onclick="navigateToSubject('lingua')" class="p-5 hover:bg-secondarySurface/60 cursor-pointer spring-transition flex flex-col sm:flex-row sm:items-center justify-between gap-4 group">
+                        <div class="flex items-center gap-4">
+                            <span class="w-10 h-10 rounded-full bg-acid/40 text-inkPrimary font-mono-custom font-bold text-sm flex items-center justify-center group-hover:bg-acid transition-colors">01</span>
+                            <div>
+                                <h4 class="text-lg font-medium text-inkPrimary group-hover:underline">Análise Linguística</h4>
+                                <p class="text-xs text-inkSecondary">Regência Nominal, Regência Verbal, Verbos Camaleões e Nomenclatura Sintática</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between sm:justify-end gap-3 shrink-0">
+                            <span class="px-3 py-1 rounded-full bg-secondarySurface text-xs font-mono-custom text-inkPrimary border border-hairline">4 Sub-blocos</span>
+                            <span class="px-3 py-1 rounded-full bg-inkPrimary text-white text-xs font-mono-custom">Peso Gramatical Alta</span>
+                            <span class="w-8 h-8 rounded-full bg-secondarySurface group-hover:bg-acid group-hover:text-inkPrimary text-inkSecondary flex items-center justify-center font-bold text-sm transition-colors">→</span>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Literatura -->
+                    <div onclick="navigateToSubject('lit')" class="p-5 hover:bg-secondarySurface/60 cursor-pointer spring-transition flex flex-col sm:flex-row sm:items-center justify-between gap-4 group">
+                        <div class="flex items-center gap-4">
+                            <span class="w-10 h-10 rounded-full bg-acid/40 text-inkPrimary font-mono-custom font-bold text-sm flex items-center justify-center group-hover:bg-acid transition-colors">02</span>
+                            <div>
+                                <h4 class="text-lg font-medium text-inkPrimary group-hover:underline">Literatura (Realismo Portugal & Brasil)</h4>
+                                <p class="text-xs text-inkSecondary">DNA Cientificista, Linha do Tempo Portuguesa, Machado de Assis & Dom Casmurro</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between sm:justify-end gap-3 shrink-0">
+                            <span class="px-3 py-1 rounded-full bg-secondarySurface text-xs font-mono-custom text-inkPrimary border border-hairline">4 Sub-blocos</span>
+                            <span class="px-3 py-1 rounded-full bg-inkPrimary text-white text-xs font-mono-custom">Obra Obrigatória</span>
+                            <span class="w-8 h-8 rounded-full bg-secondarySurface group-hover:bg-acid group-hover:text-inkPrimary text-inkSecondary flex items-center justify-center font-bold text-sm transition-colors">→</span>
+                        </div>
+                    </div>
+
+                    <!-- Row 3: Inglês Nível 2 -->
+                    <div onclick="navigateToSubject('ing')" class="p-5 hover:bg-secondarySurface/60 cursor-pointer spring-transition flex flex-col sm:flex-row sm:items-center justify-between gap-4 group">
+                        <div class="flex items-center gap-4">
+                            <span class="w-10 h-10 rounded-full bg-acid/40 text-inkPrimary font-mono-custom font-bold text-sm flex items-center justify-center group-hover:bg-acid transition-colors">03</span>
+                            <div>
+                                <h4 class="text-lg font-medium text-inkPrimary group-hover:underline">Inglês Nível 2</h4>
+                                <p class="text-xs text-inkSecondary">Conditionals (Zero, First, Second), Regra do WERE e Past Perfect</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between sm:justify-end gap-3 shrink-0">
+                            <span class="px-3 py-1 rounded-full bg-secondarySurface text-xs font-mono-custom text-inkPrimary border border-hairline">3 Sub-blocos</span>
+                            <span class="px-3 py-1 rounded-full bg-inkPrimary text-white text-xs font-mono-custom">Gramática Avançada</span>
+                            <span class="w-8 h-8 rounded-full bg-secondarySurface group-hover:bg-acid group-hover:text-inkPrimary text-inkSecondary flex items-center justify-center font-bold text-sm transition-colors">→</span>
+                        </div>
+                    </div>
+
+                    <!-- Row 4: Espanhol -->
+                    <div onclick="navigateToSubject('esp')" class="p-5 hover:bg-secondarySurface/60 cursor-pointer spring-transition flex flex-col sm:flex-row sm:items-center justify-between gap-4 group">
+                        <div class="flex items-center gap-4">
+                            <span class="w-10 h-10 rounded-full bg-acid/40 text-inkPrimary font-mono-custom font-bold text-sm flex items-center justify-center group-hover:bg-acid transition-colors">04</span>
+                            <div>
+                                <h4 class="text-lg font-medium text-inkPrimary group-hover:underline">Espanhol</h4>
+                                <p class="text-xs text-inkSecondary">Las Conjunciones (y/e, o/u, pero/sino), Los 4 Pretéritos e Particípios Irregulares</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between sm:justify-end gap-3 shrink-0">
+                            <span class="px-3 py-1 rounded-full bg-secondarySurface text-xs font-mono-custom text-inkPrimary border border-hairline">3 Sub-blocos</span>
+                            <span class="px-3 py-1 rounded-full bg-inkPrimary text-white text-xs font-mono-custom">Leitura & Regras</span>
+                            <span class="w-8 h-8 rounded-full bg-secondarySurface group-hover:bg-acid group-hover:text-inkPrimary text-inkSecondary flex items-center justify-center font-bold text-sm transition-colors">→</span>
+                        </div>
+                    </div>
+
+                    <!-- Row 5: Artes -->
+                    <div onclick="navigateToSubject('artes')" class="p-5 hover:bg-secondarySurface/60 cursor-pointer spring-transition flex flex-col sm:flex-row sm:items-center justify-between gap-4 group">
+                        <div class="flex items-center gap-4">
+                            <span class="w-10 h-10 rounded-full bg-acid/40 text-inkPrimary font-mono-custom font-bold text-sm flex items-center justify-center group-hover:bg-acid transition-colors">05</span>
+                            <div>
+                                <h4 class="text-lg font-medium text-inkPrimary group-hover:underline">Artes</h4>
+                                <p class="text-xs text-inkSecondary">Vanguardas Europeias (Cubismo, Futurismo, Abstracionismo) e Escola de Bauhaus</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between sm:justify-end gap-3 shrink-0">
+                            <span class="px-3 py-1 rounded-full bg-secondarySurface text-xs font-mono-custom text-inkPrimary border border-hairline">2 Sub-blocos</span>
+                            <span class="px-3 py-1 rounded-full bg-inkPrimary text-white text-xs font-mono-custom">História da Arte</span>
+                            <span class="w-8 h-8 rounded-full bg-secondarySurface group-hover:bg-acid group-hover:text-inkPrimary text-inkSecondary flex items-center justify-center font-bold text-sm transition-colors">→</span>
+                        </div>
+                    </div>
+
+                    <!-- Row 6: Educação Física -->
+                    <div onclick="navigateToSubject('edfisica')" class="p-5 hover:bg-secondarySurface/60 cursor-pointer spring-transition flex flex-col sm:flex-row sm:items-center justify-between gap-4 group">
+                        <div class="flex items-center gap-4">
+                            <span class="w-10 h-10 rounded-full bg-acid/40 text-inkPrimary font-mono-custom font-bold text-sm flex items-center justify-center group-hover:bg-acid transition-colors">06</span>
+                            <div>
+                                <h4 class="text-lg font-medium text-inkPrimary group-hover:underline">Educação Física</h4>
+                                <p class="text-xs text-inkSecondary">Anatomia & Fisiologia Muscular, Tipos de Fibras e Regras de Alongamento</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between sm:justify-end gap-3 shrink-0">
+                            <span class="px-3 py-1 rounded-full bg-secondarySurface text-xs font-mono-custom text-inkPrimary border border-hairline">2 Sub-blocos</span>
+                            <span class="px-3 py-1 rounded-full bg-inkPrimary text-white text-xs font-mono-custom">Fisiologia & Prova</span>
+                            <span class="w-8 h-8 rounded-full bg-secondarySurface group-hover:bg-acid group-hover:text-inkPrimary text-inkSecondary flex items-center justify-center font-bold text-sm transition-colors">→</span>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+        </div>
+
+
+        <!-- SUBJECT DETAIL VIEW (CONTAINING ALL 6 SUBJECTS AND 18 SUB-BLOCKS) -->
+        <div id="subjectDetailView" class="hidden space-y-8">
+            
+            <!-- Sticky Top Subject Controls & Switcher -->
+            <div class="sticky top-16 z-30 bg-alabaster/95 backdrop-blur-md border border-hairline p-4 rounded-2xl shadow-md flex flex-wrap items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <button onclick="backToHomeView()" class="px-3.5 py-1.5 rounded-full bg-surface border border-hairline hover:bg-secondarySurface text-xs font-semibold text-inkPrimary flex items-center gap-1.5 spring-transform">
+                        <span>←</span>
+                        <span>Voltar ao Índice</span>
+                    </button>
+                    <span class="text-xs font-mono-custom text-inkSecondary hidden sm:inline">|</span>
+                    <span id="currentSubjectTitleTag" class="text-xs font-mono-custom font-bold text-inkPrimary bg-acid px-3 py-1 rounded-full">
+                        Exibindo Matéria
+                    </span>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button onclick="toggleExpandAllSubBlocks(true)" class="px-3 py-1.5 text-xs font-medium rounded-full bg-surface border border-hairline hover:bg-secondarySurface text-inkPrimary spring-transform">
+                        Expandir Todos
+                    </button>
+                    <button onclick="toggleExpandAllSubBlocks(false)" class="px-3 py-1.5 text-xs font-medium rounded-full bg-surface border border-hairline hover:bg-secondarySurface text-inkSecondary spring-transform">
+                        Recolher Todos
+                    </button>
+                </div>
+            </div>
+
+            <!-- Subject Container Sections -->
+            <div id="subjectsContainer" class="space-y-12">
+                
+                <!-- ============================================================== -->
+                <!-- 1. ANÁLISE LINGUÍSTICA (4 SUB-BLOCOS) -->
+                <!-- ============================================================== -->
+                <section id="subject-lingua" class="subject-card space-y-6 bg-surface border border-hairline rounded-[28px] p-6 sm:p-8 shadow-sm">
+                    <div class="border-b border-hairline pb-4 flex items-center justify-between">
+                        <div>
+                            <span class="text-xs font-mono-custom text-inkSecondary uppercase tracking-wider">DISCIPLINA 01</span>
+                            <h2 class="text-2xl sm:text-3xl font-medium text-inkPrimary">Análise Linguística</h2>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-acid text-xs font-mono-custom font-bold text-inkPrimary">4 Sub-blocos</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        
+                        <!-- Sub-bloco 1: Regência Nominal — Conceito & Classes Regentes -->
+                        <div id="subblock-lingua-1" class="border border-hairline rounded-2xl overflow-hidden bg-white shadow-xs">
+                            <div onclick="toggleSubBlock('lingua-1')" class="p-4 sm:p-5 bg-secondarySurface/50 hover:bg-secondarySurface cursor-pointer flex items-center justify-between transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" id="check-lingua-1" onclick="event.stopPropagation(); toggleReviewed('lingua-1')" class="w-4 h-4 rounded text-inkPrimary focus:ring-acid cursor-pointer">
+                                    <div>
+                                        <span class="text-[11px] font-mono-custom text-inkSecondary block">SUB-BLOCO 1.1</span>
+                                        <h3 class="text-base sm:text-lg font-medium text-inkPrimary">Regência Nominal — Conceito & Classes Regentes</h3>
+                                    </div>
+                                </div>
+                                <span id="arrow-lingua-1" class="text-lg text-inkSecondary transition-transform">↓</span>
+                            </div>
+                            <div id="content-lingua-1" class="accordion-content">
+                                <div class="accordion-inner p-5 sm:p-6 space-y-6 border-t border-hairline text-sm leading-relaxed text-inkPrimary">
+                                    
+                                    <div class="bg-acid/20 border border-acid/50 rounded-xl p-4 font-mono-custom text-xs">
+                                        <span class="font-bold text-inkPrimary">FÓRMULA GERAL DA REGÊNCIA NOMINAL:</span>
+                                        <p class="mt-1 text-inkPrimary/90 font-mono-custom">[Termo Regente (Nome: Substantivo / Adjetivo / Advérbio)] + [Preposição Obrigatória] + [Termo Regido (Complemento Nominal)]</p>
+                                    </div>
+
+                                    <div>
+                                        <h4 class="font-semibold text-inkPrimary mb-2">• Como Identificar na Questão:</h4>
+                                        <ul class="list-disc list-inside space-y-1 text-inkSecondary">
+                                            <li>Faça a pergunta ao nome: <code class="bg-secondarySurface px-1.5 py-0.5 rounded text-inkPrimary font-mono">de quê?</code>, <code class="bg-secondarySurface px-1.5 py-0.5 rounded text-inkPrimary font-mono">a quê?</code>, <code class="bg-secondarySurface px-1.5 py-0.5 rounded text-inkPrimary font-mono">por quê?</code> ou <code class="bg-secondarySurface px-1.5 py-0.5 rounded text-inkPrimary font-mono">com quem?</code>.</li>
+                                            <li>O complemento nominal completa o sentido de um **nome** (nunca de um verbo) e vem sempre introduzido por preposição.</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h4 class="font-semibold text-inkPrimary mb-3">• As 3 Classes Regentes em Bloquinhos Sintéticos:</h4>
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                            <div class="bg-secondarySurface border border-hairline p-4 rounded-xl">
+                                                <span class="text-xs font-mono-custom font-bold text-inkSecondary block mb-1">1. SUBSTANTIVOS ABSTRATOS</span>
+                                                <ul class="space-y-1 text-xs text-inkPrimary font-mono-custom">
+                                                    <li>• <strong class="text-inkPrimary">amor</strong> a / por</li>
+                                                    <li>• <strong class="text-inkPrimary">medo</strong> de</li>
+                                                    <li>• <strong class="text-inkPrimary">dúvida</strong> sobre / de</li>
+                                                    <li>• <strong class="text-inkPrimary">respeito</strong> a / por / com</li>
+                                                    <li>• <strong class="text-inkPrimary">acesso</strong> a</li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="bg-secondarySurface border border-hairline p-4 rounded-xl">
+                                                <span class="text-xs font-mono-custom font-bold text-inkSecondary block mb-1">2. ADJETIVOS</span>
+                                                <ul class="space-y-1 text-xs text-inkPrimary font-mono-custom">
+                                                    <li>• <strong class="text-inkPrimary">apto</strong> a / para</li>
+                                                    <li>• <strong class="text-inkPrimary">acostumado</strong> a / com</li>
+                                                    <li>• <strong class="text-inkPrimary">ansioso</strong> por / para / de</li>
+                                                    <li>• <strong class="text-inkPrimary">fiel</strong> a</li>
+                                                    <li>• <strong class="text-inkPrimary">orgulhoso</strong> de</li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="bg-secondarySurface border border-hairline p-4 rounded-xl">
+                                                <span class="text-xs font-mono-custom font-bold text-inkSecondary block mb-1">3. ADVÉRBIOS</span>
+                                                <ul class="space-y-1 text-xs text-inkPrimary font-mono-custom">
+                                                    <li>• <strong class="text-inkPrimary">favoravelmente</strong> a</li>
+                                                    <li>• <strong class="text-inkPrimary">paralelamente</strong> a</li>
+                                                    <li>• <strong class="text-inkPrimary">longe</strong> de</li>
+                                                    <li>• <strong class="text-inkPrimary">perto</strong> de</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sub-bloco 2: Regência Nominal na Prova — Sentido, Crase & Pronome Relativo -->
+                        <div id="subblock-lingua-2" class="border border-hairline rounded-2xl overflow-hidden bg-white shadow-xs">
+                            <div onclick="toggleSubBlock('lingua-2')" class="p-4 sm:p-5 bg-secondarySurface/50 hover:bg-secondarySurface cursor-pointer flex items-center justify-between transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" id="check-lingua-2" onclick="event.stopPropagation(); toggleReviewed('lingua-2')" class="w-4 h-4 rounded text-inkPrimary focus:ring-acid cursor-pointer">
+                                    <div>
+                                        <span class="text-[11px] font-mono-custom text-inkSecondary block">SUB-BLOCO 1.2</span>
+                                        <h3 class="text-base sm:text-lg font-medium text-inkPrimary">Regência Nominal na Prova — Sentido, Crase & Pronome Relativo</h3>
+                                    </div>
+                                </div>
+                                <span id="arrow-lingua-2" class="text-lg text-inkSecondary transition-transform">↓</span>
+                            </div>
+                            <div id="content-lingua-2" class="accordion-content">
+                                <div class="accordion-inner p-5 sm:p-6 space-y-6 border-t border-hairline text-sm leading-relaxed text-inkPrimary">
+                                    
+                                    <div>
+                                        <h4 class="font-semibold text-inkPrimary mb-3">• Mudança de Sentido por Preposição (Bloquinhos da Banca):</h4>
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 font-mono-custom text-xs">
+                                            <div class="p-3 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1">Ansioso:</strong>
+                                                <p>• <span class="text-inkPrimary font-bold">por / para</span> = desejo intenso</p>
+                                                <p>• <span class="text-inkPrimary font-bold">de</span> = angústia / receio</p>
+                                            </div>
+                                            <div class="p-3 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1">Atento:</strong>
+                                                <p>• <span class="text-inkPrimary font-bold">a</span> = focado no estímulo</p>
+                                                <p>• <span class="text-inkPrimary font-bold">em</span> = concentrado na ação</p>
+                                            </div>
+                                            <div class="p-3 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1">Estranho:</strong>
+                                                <p>• <span class="text-inkPrimary font-bold">a</span> = alheio / não pertence</p>
+                                                <p>• <span class="text-inkPrimary font-bold">de</span> = esquisito em relação a</p>
+                                            </div>
+                                            <div class="p-3 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1">Simpatia:</strong>
+                                                <p>• <span class="text-inkPrimary font-bold">a / por</span> = afinidade</p>
+                                                <p class="text-red-600 font-bold">✖ Evitar "simpatia com"</p>
+                                            </div>
+                                            <div class="p-3 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1">Acesso:</strong>
+                                                <p>• Exige preposição <span class="text-inkPrimary font-bold">a</span></p>
+                                                <p class="text-emerald-700">✔ "Acesso à internet"</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="p-4 bg-inkPrimary text-white rounded-xl space-y-2">
+                                        <span class="text-xs font-mono-custom text-acid font-bold">PEGADINHA DO PRONOME RELATIVO:</span>
+                                        <p class="text-xs leading-relaxed text-white/90">
+                                            Quando a oração relativa é introduzida por pronomes (<code class="text-acid font-mono">que, o qual, cujo, onde</code>), a preposição exigida pelo NOME DEVE ser deslocada para ANTES do pronome!
+                                        </p>
+                                        <div class="text-xs font-mono-custom bg-white/10 p-2.5 rounded-lg space-y-1">
+                                            <p class="text-emerald-400">✔ "A meta <strong class="underline decoration-acid">de que</strong> temos orgulho." (Orgulhoso exige <strong class="text-acid">DE</strong>)</p>
+                                            <p class="text-emerald-400">✔ "O cargo <strong class="underline decoration-acid">a que</strong> está apto." (Apto exige <strong class="text-acid">A</strong>)</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="border border-hairline rounded-xl p-4">
+                                        <h4 class="font-semibold text-inkPrimary text-xs font-mono-custom uppercase tracking-wide mb-2">Diferença Crucial: Regência Nominal vs. Verbal</h4>
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono-custom">
+                                            <div class="bg-secondarySurface p-3 rounded-lg">
+                                                <span class="text-inkSecondary block font-bold mb-1">REGÊNCIA VERBAL</span>
+                                                <p>Obedecer <strong class="text-inkPrimary">ao regulamento</strong>.</p>
+                                                <span class="text-[10px] text-inkSecondary mt-1 block">(Obedecer = Verbo Transitivo Indireto)</span>
+                                            </div>
+                                            <div class="bg-secondarySurface p-3 rounded-lg">
+                                                <span class="text-inkSecondary block font-bold mb-1">REGÊNCIA NOMINAL</span>
+                                                <p>Ter obediência <strong class="text-inkPrimary">ao regulamento</strong>.</p>
+                                                <span class="text-[10px] text-inkSecondary mt-1 block">(Obediência = Substantivo Abstrato + CN)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sub-bloco 3: Regência Verbal & Os 5 Verbos Camaleões -->
+                        <div id="subblock-lingua-3" class="border border-hairline rounded-2xl overflow-hidden bg-white shadow-xs">
+                            <div onclick="toggleSubBlock('lingua-3')" class="p-4 sm:p-5 bg-secondarySurface/50 hover:bg-secondarySurface cursor-pointer flex items-center justify-between transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" id="check-lingua-3" onclick="event.stopPropagation(); toggleReviewed('lingua-3')" class="w-4 h-4 rounded text-inkPrimary focus:ring-acid cursor-pointer">
+                                    <div>
+                                        <span class="text-[11px] font-mono-custom text-inkSecondary block">SUB-BLOCO 1.3</span>
+                                        <h3 class="text-base sm:text-lg font-medium text-inkPrimary">Regência Verbal & Os 5 Verbos Camaleões</h3>
+                                    </div>
+                                </div>
+                                <span id="arrow-lingua-3" class="text-lg text-inkSecondary transition-transform">↓</span>
+                            </div>
+                            <div id="content-lingua-3" class="accordion-content">
+                                <div class="accordion-inner p-5 sm:p-6 space-y-6 border-t border-hairline text-sm leading-relaxed text-inkPrimary">
+                                    
+                                    <div class="bg-secondarySurface p-3 rounded-xl border border-hairline font-mono-custom text-xs">
+                                        <strong class="text-inkPrimary">TESTE DOS 5 SEGUNDOS:</strong>
+                                        <span> O quê? / Quem? (Sem preposição = VTD) vs. De quê? / A quê? / Em quê? (Com preposição = VTI).</span>
+                                    </div>
+
+                                    <div>
+                                        <h4 class="font-semibold text-inkPrimary mb-3">• Os 5 Verbos Camaleões (Comparativo de Sentido):</h4>
+                                        
+                                        <div class="space-y-3 font-mono-custom text-xs">
+                                            
+                                            <!-- Verbo 1 -->
+                                            <div class="border border-hairline rounded-xl p-3 bg-surface">
+                                                <div class="font-bold text-sm text-inkPrimary mb-1">1. ASSISTIR</div>
+                                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                                                    <div class="bg-secondarySurface p-2 rounded">
+                                                        <span class="font-bold text-inkPrimary">Sem prep (VTD):</span> Ajudar / socorrer.
+                                                        <p class="text-inkSecondary">Ex: O médico assistiu <strong class="text-inkPrimary">o paciente</strong>.</p>
+                                                    </div>
+                                                    <div class="bg-acid/30 p-2 rounded">
+                                                        <span class="font-bold text-inkPrimary">Com "A" (VTI):</span> Ver / presenciar.
+                                                        <p class="text-inkPrimary">Ex: Assistimos <strong class="text-inkPrimary underline">ao jogo</strong>.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Verbo 2 -->
+                                            <div class="border border-hairline rounded-xl p-3 bg-surface">
+                                                <div class="font-bold text-sm text-inkPrimary mb-1">2. ASPIRAR</div>
+                                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                                                    <div class="bg-secondarySurface p-2 rounded">
+                                                        <span class="font-bold text-inkPrimary">Sem prep (VTD):</span> Cheirar / inalar.
+                                                        <p class="text-inkSecondary">Ex: Aspirou <strong class="text-inkPrimary">o ar puro</strong>.</p>
+                                                    </div>
+                                                    <div class="bg-acid/30 p-2 rounded">
+                                                        <span class="font-bold text-inkPrimary">Com "A" (VTI):</span> Desejar / almejar.
+                                                        <p class="text-inkPrimary">Ex: Aspira <strong class="text-inkPrimary underline">ao cargo público</strong>.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Verbo 3 -->
+                                            <div class="border border-hairline rounded-xl p-3 bg-surface">
+                                                <div class="font-bold text-sm text-inkPrimary mb-1">3. VISAR</div>
+                                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                                                    <div class="bg-secondarySurface p-2 rounded">
+                                                        <span class="font-bold text-inkPrimary">Sem prep (VTD):</span> Mirar / assinar.
+                                                        <p class="text-inkSecondary">Ex: Visou <strong class="text-inkPrimary">o alvo</strong> / Visou <strong class="text-inkPrimary">o cheque</strong>.</p>
+                                                    </div>
+                                                    <div class="bg-acid/30 p-2 rounded">
+                                                        <span class="font-bold text-inkPrimary">Com "A" (VTI):</span> Ter como objetivo.
+                                                        <p class="text-inkPrimary">Ex: Medidas que visam <strong class="text-inkPrimary underline">ao bem comum</strong>.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Verbo 4 -->
+                                            <div class="border border-hairline rounded-xl p-3 bg-surface">
+                                                <div class="font-bold text-sm text-inkPrimary mb-1">4. IMPLICAR</div>
+                                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                                                    <div class="bg-acid/30 p-2 rounded">
+                                                        <span class="font-bold text-inkPrimary">Sem prep (VTD):</span> Acarretar / gerar.
+                                                        <p class="text-inkPrimary">Ex: A decisão implica <strong class="text-inkPrimary underline">esforço</strong> (NÃO "implica em").</p>
+                                                    </div>
+                                                    <div class="bg-secondarySurface p-2 rounded">
+                                                        <span class="font-bold text-inkPrimary">Com "COM" (VTI):</span> Implicar / ter birra.
+                                                        <p class="text-inkSecondary">Ex: Implicava <strong class="text-inkPrimary">com o irmão</strong>.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Verbo 5 -->
+                                            <div class="border border-hairline rounded-xl p-3 bg-surface">
+                                                <div class="font-bold text-sm text-inkPrimary mb-1">5. PAGAR / PERDOAR</div>
+                                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                                                    <div class="bg-secondarySurface p-2 rounded">
+                                                        <span class="font-bold text-inkPrimary">Coisa (VTD):</span> Sem preposição.
+                                                        <p class="text-inkSecondary">Ex: Paguei <strong class="text-inkPrimary">a conta</strong>.</p>
+                                                    </div>
+                                                    <div class="bg-acid/30 p-2 rounded">
+                                                        <span class="font-bold text-inkPrimary">Pessoa (VTI):</span> Com preposição "A".
+                                                        <p class="text-inkPrimary">Ex: Paguei <strong class="text-inkPrimary underline">ao entregador</strong>.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- 3 Pocket Rules -->
+                                    <div class="bg-secondarySurface p-4 rounded-xl space-y-2 border border-hairline">
+                                        <h4 class="font-semibold text-inkPrimary text-xs font-mono-custom uppercase">3 REGRAS DE BOLSO PARA A PROVA:</h4>
+                                        <ol class="list-decimal list-inside text-xs space-y-1 font-mono-custom text-inkPrimary">
+                                            <li><strong class="text-inkPrimary">Gangorra de Esquecer/Lembrar:</strong> Sem pronome = sem preposição ("Esqueci o caderno"). Com pronome = exige preposição DE ("Esqueci-me do caderno"). Nunca misture!</li>
+                                            <li><strong class="text-inkPrimary">Verbos de Movimento:</strong> Ir, Chegar, Voltar exigem preposição <strong class="text-inkPrimary">A</strong> (Ex: "Cheguei ao colégio", nunca "no colégio").</li>
+                                            <li><strong class="text-inkPrimary">Pronome Relativo Antes do Verbo:</strong> "O filme <strong class="text-inkPrimary underline">a que</strong> assisti" (o verbo assistir exige "A").</li>
+                                        </ol>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sub-bloco 4: Nomenclatura Sintática & Regras Rígidas -->
+                        <div id="subblock-lingua-4" class="border border-hairline rounded-2xl overflow-hidden bg-white shadow-xs">
+                            <div onclick="toggleSubBlock('lingua-4')" class="p-4 sm:p-5 bg-secondarySurface/50 hover:bg-secondarySurface cursor-pointer flex items-center justify-between transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" id="check-lingua-4" onclick="event.stopPropagation(); toggleReviewed('lingua-4')" class="w-4 h-4 rounded text-inkPrimary focus:ring-acid cursor-pointer">
+                                    <div>
+                                        <span class="text-[11px] font-mono-custom text-inkSecondary block">SUB-BLOCO 1.4</span>
+                                        <h3 class="text-base sm:text-lg font-medium text-inkPrimary">Nomenclatura Sintática & Regras Rígidas (Prova Tradicional)</h3>
+                                    </div>
+                                </div>
+                                <span id="arrow-lingua-4" class="text-lg text-inkSecondary transition-transform">↓</span>
+                            </div>
+                            <div id="content-lingua-4" class="accordion-content">
+                                <div class="accordion-inner p-5 sm:p-6 space-y-6 border-t border-hairline text-sm leading-relaxed text-inkPrimary">
+                                    
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 font-mono-custom text-xs">
+                                        <div class="p-3 bg-secondarySurface rounded-xl border border-hairline">
+                                            <strong class="text-inkPrimary block mb-1">VTD → Objeto Direto</strong>
+                                            <p class="text-inkSecondary">Completa o verbo sem preposição obrigatória.</p>
+                                        </div>
+                                        <div class="p-3 bg-secondarySurface rounded-xl border border-hairline">
+                                            <strong class="text-inkPrimary block mb-1">VTI → Objeto Indireto</strong>
+                                            <p class="text-inkSecondary">Completa o verbo com preposição exigida pela regência.</p>
+                                        </div>
+                                        <div class="p-3 bg-secondarySurface rounded-xl border border-hairline">
+                                            <strong class="text-inkPrimary block mb-1">Pegadinha do VI:</strong>
+                                            <p class="text-inkSecondary">Ir, chegar, morar são Intransitivos! "Ao colégio" é Adjunto Adverbial de Lugar.</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Pronomes Oblíquos e Regência -->
+                                    <div class="border border-hairline rounded-xl p-4 bg-surface space-y-3">
+                                        <h4 class="font-semibold text-inkPrimary text-xs font-mono-custom uppercase">Pronomes Oblíquos × Substituição Sintática</h4>
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono-custom">
+                                            <div class="p-3 bg-secondarySurface rounded-lg">
+                                                <span class="font-bold text-inkPrimary block">o, a, os, as = Objeto Direto</span>
+                                                <p class="text-inkSecondary mt-1">Ex: Namoro-a. / Comprei-o.</p>
+                                            </div>
+                                            <div class="p-3 bg-secondarySurface rounded-lg">
+                                                <span class="font-bold text-inkPrimary block">lhe, lhes = Objeto Indireto (Pessoa)</span>
+                                                <p class="text-inkSecondary mt-1">Ex: Obedeço-lhe. / Paguei-lhe.</p>
+                                            </div>
+                                        </div>
+                                        <div class="p-2.5 bg-acid/30 text-inkPrimary rounded-lg text-xs font-mono-custom font-semibold">
+                                            ✖ Exceção dos Verbos VTI de lugar/coisa (Assistir, Visar, Aspirar, Aludir): NÃO aceitam "lhe"! Usa-se <strong class="underline font-bold">a ele(s) / a ela(s)</strong>. (Ex: Assisti a ele).
+                                        </div>
+                                    </div>
+
+                                    <!-- 6 Bloquinhos Campeões de Erro -->
+                                    <div>
+                                        <h4 class="font-semibold text-inkPrimary mb-3 text-xs font-mono-custom uppercase">• 6 Bloquinhos Campeões de Erro em Prova:</h4>
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs font-mono-custom">
+                                            <div class="p-3 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1">1. Preferir:</strong>
+                                                <p>Prefiro X <strong class="text-inkPrimary font-bold">A</strong> Y.</p>
+                                                <span class="text-red-600 text-[10px]">✖ Nunca "mais... do que"</span>
+                                            </div>
+                                            <div class="p-3 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1">2. Namorar:</strong>
+                                                <p>VTD puro: <strong class="text-inkPrimary font-bold">Namora Maria</strong>.</p>
+                                                <span class="text-red-600 text-[10px]">✖ Nunca "namora com"</span>
+                                            </div>
+                                            <div class="p-3 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1">3. Simpatizar:</strong>
+                                                <p>Não pronominal: <strong class="text-inkPrimary font-bold">Simpatizei com</strong>.</p>
+                                                <span class="text-red-600 text-[10px]">✖ Nunca "me simpatizei"</span>
+                                            </div>
+                                            <div class="p-3 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1">4. Obedecer:</strong>
+                                                <p>Sempre VTI: <strong class="text-inkPrimary font-bold">Obedeça às leis</strong>.</p>
+                                                <span class="text-red-600 text-[10px]">✖ Nunca "obedeça as leis"</span>
+                                            </div>
+                                            <div class="p-3 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1">5. Agradar:</strong>
+                                                <p>VTD = carinho ("o cão").</p>
+                                                <p>VTI = satisfazer ("ao público").</p>
+                                            </div>
+                                            <div class="p-3 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1">6. Residente / Sito:</strong>
+                                                <p>Exigem preposição <strong class="text-inkPrimary font-bold">EM</strong>.</p>
+                                                <p class="text-emerald-700 font-bold">✔ "Residente na Rua X"</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+
+                <!-- ============================================================== -->
+                <!-- 2. LITERATURA (4 SUB-BLOCOS) -->
+                <!-- ============================================================== -->
+                <section id="subject-lit" class="subject-card space-y-6 bg-surface border border-hairline rounded-[28px] p-6 sm:p-8 shadow-sm">
+                    <div class="border-b border-hairline pb-4 flex items-center justify-between">
+                        <div>
+                            <span class="text-xs font-mono-custom text-inkSecondary uppercase tracking-wider">DISCIPLINA 02</span>
+                            <h2 class="text-2xl sm:text-3xl font-medium text-inkPrimary">Literatura (Realismo PT & BR)</h2>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-acid text-xs font-mono-custom font-bold text-inkPrimary">4 Sub-blocos</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        
+                        <!-- Sub-bloco 1: DNA do Realismo & Bases Científicas -->
+                        <div id="subblock-lit-1" class="border border-hairline rounded-2xl overflow-hidden bg-white shadow-xs">
+                            <div onclick="toggleSubBlock('lit-1')" class="p-4 sm:p-5 bg-secondarySurface/50 hover:bg-secondarySurface cursor-pointer flex items-center justify-between transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" id="check-lit-1" onclick="event.stopPropagation(); toggleReviewed('lit-1')" class="w-4 h-4 rounded text-inkPrimary focus:ring-acid cursor-pointer">
+                                    <div>
+                                        <span class="text-[11px] font-mono-custom text-inkSecondary block">SUB-BLOCO 2.1</span>
+                                        <h3 class="text-base sm:text-lg font-medium text-inkPrimary">DNA do Realismo & Bases Científicas</h3>
+                                    </div>
+                                </div>
+                                <span id="arrow-lit-1" class="text-lg text-inkSecondary transition-transform">↓</span>
+                            </div>
+                            <div id="content-lit-1" class="accordion-content">
+                                <div class="accordion-inner p-5 sm:p-6 space-y-6 border-t border-hairline text-sm leading-relaxed text-inkPrimary">
+                                    
+                                    <div class="p-3 bg-acid/20 rounded-xl border border-acid/50 font-mono-custom text-xs">
+                                        <strong class="text-inkPrimary">INIMIGO Nº 1 DO REALISMO:</strong>
+                                        <span> O Romantismo. Fim da idealização, da mulher anjo, do herói sem mácula e do escapismo amoroso.</span>
+                                    </div>
+
+                                    <div>
+                                        <h4 class="font-semibold text-inkPrimary mb-3">• As 4 Bases Cientificistas em Bloquinhos:</h4>
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs font-mono-custom">
+                                            <div class="p-3 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1">1. Positivismo (Comte)</strong>
+                                                <p class="text-inkSecondary">Apenas a ciência e a observação dos fatos explicam o mundo.</p>
+                                            </div>
+                                            <div class="p-3 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1">2. Determinismo (Taine)</strong>
+                                                <p class="text-inkSecondary">O homem é fruto do meio, da raça/hereditariedade e do momento histórico.</p>
+                                            </div>
+                                            <div class="p-3 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1">3. Evolucionismo (Darwin)</strong>
+                                                <p class="text-inkSecondary">Seleção natural e leis biológicas aplicadas à sociedade.</p>
+                                            </div>
+                                            <div class="p-3 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1">4. Socialismo (Proudhon)</strong>
+                                                <p class="text-inkSecondary">Crítica às desigualdades sociais e às instituições burguesas.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <h4 class="font-semibold text-inkPrimary mb-2">• Características & Temas de Prova:</h4>
+                                        <ul class="list-disc list-inside space-y-1 text-inkSecondary text-xs font-mono-custom">
+                                            <li><strong class="text-inkPrimary">Objetividade & Verossimilhança:</strong> Narrativa lenta, analítica e descritiva.</li>
+                                            <li><strong class="text-inkPrimary">Personagens Esféricas:</strong> Complexidade psicológica e contradições morais (ex: Conselheiro Acácio).</li>
+                                            <li><strong class="text-inkPrimary">Temas de Ataque:</strong> Adultério, casamento por interesse, hipocrisia clerical, decadência aristocrática.</li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sub-bloco 2: Realismo em Portugal — Linha do Tempo & Autores -->
+                        <div id="subblock-lit-2" class="border border-hairline rounded-2xl overflow-hidden bg-white shadow-xs">
+                            <div onclick="toggleSubBlock('lit-2')" class="p-4 sm:p-5 bg-secondarySurface/50 hover:bg-secondarySurface cursor-pointer flex items-center justify-between transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" id="check-lit-2" onclick="event.stopPropagation(); toggleReviewed('lit-2')" class="w-4 h-4 rounded text-inkPrimary focus:ring-acid cursor-pointer">
+                                    <div>
+                                        <span class="text-[11px] font-mono-custom text-inkSecondary block">SUB-BLOCO 2.2</span>
+                                        <h3 class="text-base sm:text-lg font-medium text-inkPrimary">Realismo em Portugal — Linha do Tempo & Autores</h3>
+                                    </div>
+                                </div>
+                                <span id="arrow-lit-2" class="text-lg text-inkSecondary transition-transform">↓</span>
+                            </div>
+                            <div id="content-lit-2" class="accordion-content">
+                                <div class="accordion-inner p-5 sm:p-6 space-y-6 border-t border-hairline text-sm leading-relaxed text-inkPrimary">
+                                    
+                                    <!-- Interactive Timeline -->
+                                    <div>
+                                        <h4 class="font-semibold text-inkPrimary mb-3 text-xs font-mono-custom uppercase tracking-wider">• Linha do Tempo Interativa do Realismo Português:</h4>
+                                        
+                                        <div class="relative border-l-2 border-acid pl-4 space-y-6 my-4 font-mono-custom text-xs">
+                                            
+                                            <!-- Point 1 -->
+                                            <div class="relative group">
+                                                <div class="absolute -left-[23px] top-1 w-3.5 h-3.5 rounded-full bg-inkPrimary border-2 border-acid group-hover:scale-125 transition-transform"></div>
+                                                <span class="text-acid bg-inkPrimary px-2 py-0.5 rounded font-bold">1865 — Questão Coimbrã</span>
+                                                <p class="text-inkPrimary font-medium mt-1">Antero de Quental publica "BOM SENSO E BOM GOSTO" atacando a poesia ultrarromântica e antiquada de Feliciano de Castilho.</p>
+                                            </div>
+
+                                            <!-- Point 2 -->
+                                            <div class="relative group">
+                                                <div class="absolute -left-[23px] top-1 w-3.5 h-3.5 rounded-full bg-inkPrimary border-2 border-acid group-hover:scale-125 transition-transform"></div>
+                                                <span class="text-acid bg-inkPrimary px-2 py-0.5 rounded font-bold">1871 — Conferências do Cassino Lisbonense</span>
+                                                <p class="text-inkPrimary font-medium mt-1">Geração de 70 debate a renovação política, moral e artística de Portugal. Evento censurado pelo governo.</p>
+                                            </div>
+
+                                            <!-- Point 3 -->
+                                            <div class="relative group">
+                                                <div class="absolute -left-[23px] top-1 w-3.5 h-3.5 rounded-full bg-inkPrimary border-2 border-acid group-hover:scale-125 transition-transform"></div>
+                                                <span class="text-acid bg-inkPrimary px-2 py-0.5 rounded font-bold">1875 — "O Crime do Padre Amaro"</span>
+                                                <p class="text-inkPrimary font-medium mt-1">Eça de Queirós publica a obra marco do Naturalismo/Realismo. Ataque fulminante à corrupção e hipocrisia do clero.</p>
+                                            </div>
+
+                                            <!-- Point 4 -->
+                                            <div class="relative group">
+                                                <div class="absolute -left-[23px] top-1 w-3.5 h-3.5 rounded-full bg-inkPrimary border-2 border-acid group-hover:scale-125 transition-transform"></div>
+                                                <span class="text-acid bg-inkPrimary px-2 py-0.5 rounded font-bold">1878 — "O Primo Basílio"</span>
+                                                <p class="text-inkPrimary font-medium mt-1">Eça analisa a ociosidade da mulher burguesa (Luísa) e o adultério estimulado pela leitura romântica.</p>
+                                            </div>
+
+                                            <!-- Point 5 -->
+                                            <div class="relative group">
+                                                <div class="absolute -left-[23px] top-1 w-3.5 h-3.5 rounded-full bg-inkPrimary border-2 border-acid group-hover:scale-125 transition-transform"></div>
+                                                <span class="text-acid bg-inkPrimary px-2 py-0.5 rounded font-bold">1888 — "Os Maias"</span>
+                                                <p class="text-inkPrimary font-medium mt-1">Obra-prima de Eça de Queirós. Radiografia da decadência moral da elite lisboeta e o incesto involuntário (Carlos Eduardo & Maria Eduarda).</p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- Bloquinhos de Autores Portugueses -->
+                                    <div>
+                                        <h4 class="font-semibold text-inkPrimary mb-3 text-xs font-mono-custom uppercase">• Autores e Obras em Bloquinhos:</h4>
+                                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs font-mono-custom">
+                                            <div class="p-3 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1">Eça de Queirós (Prosa)</strong>
+                                                <p class="text-inkSecondary">Padre Amaro, Primo Basílio, Os Maias, A Relíquia. Ironia fina e crítica social.</p>
+                                            </div>
+                                            <div class="p-3 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1">Antero de Quental (Poesia)</strong>
+                                                <p class="text-inkSecondary">Odes Modernas, Sonetos Completos. Poesia filosófica, política e existencial.</p>
+                                            </div>
+                                            <div class="p-3 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1">Cesário Verde (Poesia Urbana)</strong>
+                                                <p class="text-inkSecondary">O Livro de Cesário Verde. Poesia antilírica, urbana e realista cotidiana.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sub-bloco 3: Realismo no Brasil & Comparativo Portugal × Brasil -->
+                        <div id="subblock-lit-3" class="border border-hairline rounded-2xl overflow-hidden bg-white shadow-xs">
+                            <div onclick="toggleSubBlock('lit-3')" class="p-4 sm:p-5 bg-secondarySurface/50 hover:bg-secondarySurface cursor-pointer flex items-center justify-between transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" id="check-lit-3" onclick="event.stopPropagation(); toggleReviewed('lit-3')" class="w-4 h-4 rounded text-inkPrimary focus:ring-acid cursor-pointer">
+                                    <div>
+                                        <span class="text-[11px] font-mono-custom text-inkSecondary block">SUB-BLOCO 2.3</span>
+                                        <h3 class="text-base sm:text-lg font-medium text-inkPrimary">Realismo no Brasil & Comparativo Portugal × Brasil</h3>
+                                    </div>
+                                </div>
+                                <span id="arrow-lit-3" class="text-lg text-inkSecondary transition-transform">↓</span>
+                            </div>
+                            <div id="content-lit-3" class="accordion-content">
+                                <div class="accordion-inner p-5 sm:p-6 space-y-6 border-t border-hairline text-sm leading-relaxed text-inkPrimary">
+                                    
+                                    <div class="bg-acid/30 p-3 rounded-xl font-mono-custom text-xs">
+                                        <strong class="text-inkPrimary">MARCO INICIAL NO BRASIL (1881):</strong>
+                                        <span class="text-inkPrimary font-medium"> Publicação de "Memórias Póstumas de Brás Cubas" (Machado de Assis). Mesmo ano de "O Mulato" (Aluísio Azevedo - Naturalismo).</span>
+                                    </div>
+
+                                    <div>
+                                        <h4 class="font-semibold text-inkPrimary mb-3">• Principais Autores & Obras do Realismo Brasileiro:</h4>
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono-custom">
+                                            <div class="p-3 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1">Machado de Assis (Trilogia Realista)</strong>
+                                                <ul class="space-y-1 text-inkSecondary">
+                                                    <li>• <strong class="text-inkPrimary">1881:</strong> Memórias Póstumas de Brás Cubas</li>
+                                                    <li>• <strong class="text-inkPrimary">1891:</strong> Quincas Borba (Humanititas)</li>
+                                                    <li>• <strong class="text-inkPrimary">1899:</strong> Dom Casmurro (Ciúme & Capitu)</li>
+                                                    <li>• Contos antológicos: <em>O Alienista, Missa do Galo</em></li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="p-3 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1">Raul Pompeia</strong>
+                                                <ul class="space-y-1 text-inkSecondary">
+                                                    <li>• <strong class="text-inkPrimary">1888:</strong> O Ateneu (Romance de formação / Colégio interno)</li>
+                                                    <li>• Traços realistas, naturalistas e impressionistas.</li>
+                                                    <li>• "Vais encontrar o mundo, disse-me meu pai à porta do Ateneu..."</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Comparative Table: Portugal vs. Brasil -->
+                                    <div>
+                                        <h4 class="font-semibold text-inkPrimary mb-3 text-xs font-mono-custom uppercase tracking-wider">• Tabela Comparativa: Realismo Portugal × Brasil</h4>
+                                        <div class="overflow-x-auto">
+                                            <table class="w-full text-xs font-mono-custom border-collapse border border-hairline">
+                                                <thead>
+                                                    <tr class="bg-inkPrimary text-white">
+                                                        <th class="p-2.5 text-left border border-white/20">Crivo</th>
+                                                        <th class="p-2.5 text-left border border-white/20">Realismo em Portugal</th>
+                                                        <th class="p-2.5 text-left border border-white/20">Realismo no Brasil</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="divide-y divide-hairline">
+                                                    <tr class="bg-surface">
+                                                        <td class="p-2.5 font-bold text-inkPrimary border">Ano-Chave</td>
+                                                        <td class="p-2.5 text-inkSecondary border">1865 (Questão Coimbrã)</td>
+                                                        <td class="p-2.5 text-inkSecondary border">1881 (Brás Cubas)</td>
+                                                    </tr>
+                                                    <tr class="bg-secondarySurface/40">
+                                                        <td class="p-2.5 font-bold text-inkPrimary border">Alvo Principal</td>
+                                                        <td class="p-2.5 text-inkSecondary border">Monarquia, Igreja Católica, romantismo folhetinesco</td>
+                                                        <td class="p-2.5 text-inkSecondary border">Elite escravocrata do Rio, vaidade burguesa, ciúme</td>
+                                                    </tr>
+                                                    <tr class="bg-surface">
+                                                        <td class="p-2.5 font-bold text-inkPrimary border">Narrador</td>
+                                                        <td class="p-2.5 text-inkSecondary border">3ª pessoa onisciente, irônico e incisivo (Eça)</td>
+                                                        <td class="p-2.5 text-inkSecondary border">1ª pessoa em defunto autor ou narrador não confiável (Machado)</td>
+                                                    </tr>
+                                                    <tr class="bg-secondarySurface/40">
+                                                        <td class="p-2.5 font-bold text-inkPrimary border">Tom Predominante</td>
+                                                        <td class="p-2.5 text-inkSecondary border">Combativo, anticlerical, reformador</td>
+                                                        <td class="p-2.5 text-inkSecondary border">Pessimista, filosófico, metalinguístico, sutil</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sub-bloco 4: Obra Obrigatória — Dom Casmurro (1899) -->
+                        <div id="subblock-lit-4" class="border border-hairline rounded-2xl overflow-hidden bg-white shadow-xs">
+                            <div onclick="toggleSubBlock('lit-4')" class="p-4 sm:p-5 bg-secondarySurface/50 hover:bg-secondarySurface cursor-pointer flex items-center justify-between transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" id="check-lit-4" onclick="event.stopPropagation(); toggleReviewed('lit-4')" class="w-4 h-4 rounded text-inkPrimary focus:ring-acid cursor-pointer">
+                                    <div>
+                                        <span class="text-[11px] font-mono-custom text-inkSecondary block">SUB-BLOCO 2.4</span>
+                                        <h3 class="text-base sm:text-lg font-medium text-inkPrimary">Obra Obrigatória — Dom Casmurro (1899)</h3>
+                                    </div>
+                                </div>
+                                <span id="arrow-lit-4" class="text-lg text-inkSecondary transition-transform">↓</span>
+                            </div>
+                            <div id="content-lit-4" class="accordion-content">
+                                <div class="accordion-inner p-5 sm:p-6 space-y-6 border-t border-hairline text-sm leading-relaxed text-inkPrimary">
+                                    
+                                    <div class="bg-inkPrimary text-white p-4 rounded-xl space-y-1 font-mono-custom text-xs">
+                                        <span class="text-acid font-bold">ESTRUTURA & NARRADOR:</span>
+                                        <p class="text-white/90">Bento Santiago velhaco tenta <em class="text-acid font-serif">"atar as duas pontas da vida"</em>. Narrador em 1ª pessoa absolutamente NÃO CONFIÁVEL. Ambiguidade proposital do romance.</p>
+                                    </div>
+
+                                    <div>
+                                        <h4 class="font-semibold text-inkPrimary mb-3 text-xs font-mono-custom uppercase">• Os 7 Personagens em Bloquinhos:</h4>
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs font-mono-custom">
+                                            <div class="p-3 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1">1. Bentinho (Dom Casmurro)</strong>
+                                                <p class="text-inkSecondary">Narrador ciumento, mimado pela mãe, inseguro e obsessivo.</p>
+                                            </div>
+                                            <div class="p-3 bg-acid/30 rounded-xl border border-inkPrimary/20">
+                                                <strong class="text-inkPrimary block mb-1">2. Capitu (Capitolina)</strong>
+                                                <p class="text-inkPrimary">"Olhos de ressaca", "cigana oblíqua e dissimulada". Forte e decidida.</p>
+                                            </div>
+                                            <div class="p-3 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1">3. Escobar</strong>
+                                                <p class="text-inkSecondary">Amigo de seminário, comerciante ágil. Morre afogado no mar.</p>
+                                            </div>
+                                            <div class="p-3 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1">4. Dona Glória</strong>
+                                                <p class="text-inkSecondary">Mãe protetora que fez promessa para Bentinho virar padre.</p>
+                                            </div>
+                                            <div class="p-3 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1">5. José Dias</strong>
+                                                <p class="text-inkSecondary">Agregado da família, especialista em usar superlativos adocicados.</p>
+                                            </div>
+                                            <div class="p-3 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1">6. Ezequiel</strong>
+                                                <p class="text-inkSecondary">Filho de Bento/Capitu que Bentinho acha idêntico a Escobar.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 4 Key Exam Points -->
+                                    <div class="bg-secondarySurface p-4 rounded-xl border border-hairline space-y-2 text-xs font-mono-custom">
+                                        <strong class="text-inkPrimary block font-bold uppercase">4 PONTOS CHAVE DE PROVA:</strong>
+                                        <ol class="list-decimal list-inside space-y-1 text-inkPrimary">
+                                            <li><strong class="text-inkPrimary">Tema Central:</strong> Não é se Capitu traiu ou não, mas a construção mental do ciúme obsessivo de Bentinho.</li>
+                                            <li><strong class="text-inkPrimary">Origem da Alcunha:</strong> "Dom Casmurro" vem do vizinho poeta do trem; homem calado, casmurro, teimoso e fechado.</li>
+                                            <li><strong class="text-inkPrimary">Metalinguagem:</strong> Bento frequentemente conversa com o leitor e comenta o próprio ato de escrever.</li>
+                                            <li><strong class="text-inkPrimary">Engenho Novo:</strong> Bento constrói uma réplica exata da casa da infância de Matacavalos para tentar recuperar o passado.</li>
+                                        </ol>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+
+                <!-- ============================================================== -->
+                <!-- 3. INGLÊS NÍVEL 2 (3 SUB-BLOCOS) -->
+                <!-- ============================================================== -->
+                <section id="subject-ing" class="subject-card space-y-6 bg-surface border border-hairline rounded-[28px] p-6 sm:p-8 shadow-sm">
+                    <div class="border-b border-hairline pb-4 flex items-center justify-between">
+                        <div>
+                            <span class="text-xs font-mono-custom text-inkSecondary uppercase tracking-wider">DISCIPLINA 03</span>
+                            <h2 class="text-2xl sm:text-3xl font-medium text-inkPrimary">Inglês Nível 2</h2>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-acid text-xs font-mono-custom font-bold text-inkPrimary">3 Sub-blocos</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        
+                        <!-- Sub-bloco 1: Conditionals (Zero, First e Second) -->
+                        <div id="subblock-ing-1" class="border border-hairline rounded-2xl overflow-hidden bg-white shadow-xs">
+                            <div onclick="toggleSubBlock('ing-1')" class="p-4 sm:p-5 bg-secondarySurface/50 hover:bg-secondarySurface cursor-pointer flex items-center justify-between transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" id="check-ing-1" onclick="event.stopPropagation(); toggleReviewed('ing-1')" class="w-4 h-4 rounded text-inkPrimary focus:ring-acid cursor-pointer">
+                                    <div>
+                                        <span class="text-[11px] font-mono-custom text-inkSecondary block">SUB-BLOCO 3.1</span>
+                                        <h3 class="text-base sm:text-lg font-medium text-inkPrimary">Conditionals (Zero, First e Second)</h3>
+                                    </div>
+                                </div>
+                                <span id="arrow-ing-1" class="text-lg text-inkSecondary transition-transform">↓</span>
+                            </div>
+                            <div id="content-ing-1" class="accordion-content">
+                                <div class="accordion-inner p-5 sm:p-6 space-y-6 border-t border-hairline text-sm leading-relaxed text-inkPrimary">
+                                    
+                                    <div class="p-3 bg-secondarySurface rounded-xl border border-hairline font-mono-custom text-xs">
+                                        <strong class="text-inkPrimary">REGRA DA VÍRGULA:</strong>
+                                        <span> Se a oração começar com <code class="text-inkPrimary font-bold">IF</code>, a vírgula é OBRIGATÓRIA no meio. Se o <code class="text-inkPrimary font-bold">IF</code> vier na segunda metade, NÃO usa vírgula!</span>
+                                    </div>
+
+                                    <div>
+                                        <h4 class="font-semibold text-inkPrimary mb-3 text-xs font-mono-custom uppercase">• Fórmulas em Bloquinhos:</h4>
+                                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs font-mono-custom">
+                                            
+                                            <div class="p-3.5 bg-secondarySurface rounded-xl border border-hairline">
+                                                <span class="text-xs font-bold text-inkPrimary block mb-1">ZERO CONDITIONAL</span>
+                                                <span class="text-[11px] text-inkSecondary block mb-2">Fatos gerais / leis da ciência</span>
+                                                <div class="p-2 bg-surface rounded border border-hairline">
+                                                    <code>If + Simple Present , Simple Present</code>
+                                                </div>
+                                                <p class="text-inkSecondary mt-2">Ex: "If you heat ice, it melts."</p>
+                                            </div>
+
+                                            <div class="p-3.5 bg-secondarySurface rounded-xl border border-hairline">
+                                                <span class="text-xs font-bold text-inkPrimary block mb-1">FIRST CONDITIONAL</span>
+                                                <span class="text-[11px] text-inkSecondary block mb-2">Futuro real / provável</span>
+                                                <div class="p-2 bg-surface rounded border border-hairline">
+                                                    <code>If + Simple Present , WILL + Verbo</code>
+                                                </div>
+                                                <p class="text-inkSecondary mt-2">Ex: "If it rains, I will stay home."</p>
+                                            </div>
+
+                                            <div class="p-3.5 bg-acid/30 rounded-xl border border-inkPrimary/20">
+                                                <span class="text-xs font-bold text-inkPrimary block mb-1">SECOND CONDITIONAL</span>
+                                                <span class="text-[11px] text-inkPrimary/80 block mb-2">Hipótese irreal / presente</span>
+                                                <div class="p-2 bg-surface rounded border border-hairline">
+                                                    <code>If + Simple Past , WOULD + Verbo</code>
+                                                </div>
+                                                <p class="text-inkPrimary mt-2">Ex: "If I won the lottery, I would buy a house."</p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sub-bloco 2: Destaque de Prova — Second Conditional -->
+                        <div id="subblock-ing-2" class="border border-hairline rounded-2xl overflow-hidden bg-white shadow-xs">
+                            <div onclick="toggleSubBlock('ing-2')" class="p-4 sm:p-5 bg-secondarySurface/50 hover:bg-secondarySurface cursor-pointer flex items-center justify-between transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" id="check-ing-2" onclick="event.stopPropagation(); toggleReviewed('ing-2')" class="w-4 h-4 rounded text-inkPrimary focus:ring-acid cursor-pointer">
+                                    <div>
+                                        <span class="text-[11px] font-mono-custom text-inkSecondary block">SUB-BLOCO 3.2</span>
+                                        <h3 class="text-base sm:text-lg font-medium text-inkPrimary">Destaque de Prova — Second Conditional & Regra do WERE</h3>
+                                    </div>
+                                </div>
+                                <span id="arrow-ing-2" class="text-lg text-inkSecondary transition-transform">↓</span>
+                            </div>
+                            <div id="content-ing-2" class="accordion-content">
+                                <div class="accordion-inner p-5 sm:p-6 space-y-6 border-t border-hairline text-sm leading-relaxed text-inkPrimary">
+                                    
+                                    <div>
+                                        <h4 class="font-semibold text-inkPrimary mb-3 text-xs font-mono-custom uppercase">• 3 Regras Críticas para Questões de Segunda Condicional:</h4>
+                                        
+                                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs font-mono-custom">
+                                            
+                                            <div class="p-4 bg-inkPrimary text-white rounded-xl space-y-2">
+                                                <span class="text-acid font-bold block text-sm">1. REGRA DO WERE</span>
+                                                <p class="text-white/90 leading-relaxed">
+                                                    Na Second Conditional, o verbo TO BE usa obrigatoriamente <strong class="text-acid font-bold">WERE</strong> para TODAS as pessoas, inclusive <em>I, he, she, it</em>!
+                                                </p>
+                                                <div class="p-2 bg-white/10 rounded text-emerald-300 font-bold">
+                                                    ✔ "If I WERE you, I would study."
+                                                </div>
+                                            </div>
+
+                                            <div class="p-4 bg-secondarySurface rounded-xl border border-hairline space-y-2">
+                                                <span class="text-inkPrimary font-bold block text-sm">2. FORMA vs. SENTIDO</span>
+                                                <p class="text-inkSecondary leading-relaxed">
+                                                    O verbo fica no <em>Simple Past</em> (ex: <em>knew, had, studied</em>), mas o sentido é de hipótese no <strong>PRESENTE</strong> ou no <strong>FUTURO</strong>!
+                                                </p>
+                                            </div>
+
+                                            <div class="p-4 bg-secondarySurface rounded-xl border border-hairline space-y-2">
+                                                <span class="text-inkPrimary font-bold block text-sm">3. PROIBIDO IF + WOULD</span>
+                                                <p class="text-inkSecondary leading-relaxed">
+                                                    O modal <em>WOULD/COULD/MIGHT</em> NUNCA fica dentro da oração com <strong>IF</strong>. Ele fica sempre na oração principal do resultado!
+                                                </p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sub-bloco 3: Past Perfect (O Passado do Passado) -->
+                        <div id="subblock-ing-3" class="border border-hairline rounded-2xl overflow-hidden bg-white shadow-xs">
+                            <div onclick="toggleSubBlock('ing-3')" class="p-4 sm:p-5 bg-secondarySurface/50 hover:bg-secondarySurface cursor-pointer flex items-center justify-between transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" id="check-ing-3" onclick="event.stopPropagation(); toggleReviewed('ing-3')" class="w-4 h-4 rounded text-inkPrimary focus:ring-acid cursor-pointer">
+                                    <div>
+                                        <span class="text-[11px] font-mono-custom text-inkSecondary block">SUB-BLOCO 3.3</span>
+                                        <h3 class="text-base sm:text-lg font-medium text-inkPrimary">Past Perfect (O Passado do Passado)</h3>
+                                    </div>
+                                </div>
+                                <span id="arrow-ing-3" class="text-lg text-inkSecondary transition-transform">↓</span>
+                            </div>
+                            <div id="content-ing-3" class="accordion-content">
+                                <div class="accordion-inner p-5 sm:p-6 space-y-6 border-t border-hairline text-sm leading-relaxed text-inkPrimary">
+                                    
+                                    <div class="bg-acid/20 border border-acid/50 p-4 rounded-xl font-mono-custom text-xs">
+                                        <span class="font-bold text-inkPrimary uppercase block mb-1">Fórmula Estrutural do Past Perfect:</span>
+                                        <div class="flex flex-wrap gap-2 text-inkPrimary font-bold">
+                                            <span class="px-2 py-1 bg-surface rounded">Afirmativa: Sujeito + HAD + Particípio</span>
+                                            <span class="px-2 py-1 bg-surface rounded">Negativa: Sujeito + HADN'T + Particípio</span>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <h4 class="font-semibold text-inkPrimary mb-2">• Lógica Temporal (2 Ações no Passado):</h4>
+                                        <div class="p-4 bg-secondarySurface rounded-xl border border-hairline space-y-2 font-mono-custom text-xs">
+                                            <p><strong class="text-inkPrimary">Ação 1 (Mais antiga):</strong> USA PAST PERFECT (<code class="bg-surface px-1.5 py-0.5 rounded text-inkPrimary font-bold">had already left</code>)</p>
+                                            <p><strong class="text-inkPrimary">Ação 2 (Mais recente):</strong> USA SIMPLE PAST (<code class="bg-surface px-1.5 py-0.5 rounded text-inkPrimary font-bold">arrived</code>)</p>
+                                            <div class="p-3 bg-surface rounded border border-hairline font-bold text-inkPrimary mt-2">
+                                                Exemplo: "When I arrived at the station, the train HAD ALREADY LEFT."
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <h4 class="font-semibold text-inkPrimary mb-2 text-xs font-mono-custom uppercase">• Palavras Gatilho de Prova:</h4>
+                                        <div class="flex flex-wrap gap-2 font-mono-custom text-xs">
+                                            <span class="px-3 py-1 bg-secondarySurface rounded-full border border-hairline">already</span>
+                                            <span class="px-3 py-1 bg-secondarySurface rounded-full border border-hairline">before</span>
+                                            <span class="px-3 py-1 bg-secondarySurface rounded-full border border-hairline">after</span>
+                                            <span class="px-3 py-1 bg-secondarySurface rounded-full border border-hairline">when</span>
+                                            <span class="px-3 py-1 bg-secondarySurface rounded-full border border-hairline">by the time</span>
+                                            <span class="px-3 py-1 bg-secondarySurface rounded-full border border-hairline">never</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+
+                <!-- ============================================================== -->
+                <!-- 4. ESPANHOL (3 SUB-BLOCOS) -->
+                <!-- ============================================================== -->
+                <section id="subject-esp" class="subject-card space-y-6 bg-surface border border-hairline rounded-[28px] p-6 sm:p-8 shadow-sm">
+                    <div class="border-b border-hairline pb-4 flex items-center justify-between">
+                        <div>
+                            <span class="text-xs font-mono-custom text-inkSecondary uppercase tracking-wider">DISCIPLINA 04</span>
+                            <h2 class="text-2xl sm:text-3xl font-medium text-inkPrimary">Espanhol</h2>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-acid text-xs font-mono-custom font-bold text-inkPrimary">3 Sub-blocos</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        
+                        <!-- Sub-bloco 1: Las Conjunciones (Regras de Prova) -->
+                        <div id="subblock-esp-1" class="border border-hairline rounded-2xl overflow-hidden bg-white shadow-xs">
+                            <div onclick="toggleSubBlock('esp-1')" class="p-4 sm:p-5 bg-secondarySurface/50 hover:bg-secondarySurface cursor-pointer flex items-center justify-between transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" id="check-esp-1" onclick="event.stopPropagation(); toggleReviewed('esp-1')" class="w-4 h-4 rounded text-inkPrimary focus:ring-acid cursor-pointer">
+                                    <div>
+                                        <span class="text-[11px] font-mono-custom text-inkSecondary block">SUB-BLOCO 4.1</span>
+                                        <h3 class="text-base sm:text-lg font-medium text-inkPrimary">Las Conjunciones (Regras de Eufonia & Conectivos)</h3>
+                                    </div>
+                                </div>
+                                <span id="arrow-esp-1" class="text-lg text-inkSecondary transition-transform">↓</span>
+                            </div>
+                            <div id="content-esp-1" class="accordion-content">
+                                <div class="accordion-inner p-5 sm:p-6 space-y-6 border-t border-hairline text-sm leading-relaxed text-inkPrimary">
+                                    
+                                    <div>
+                                        <h4 class="font-semibold text-inkPrimary mb-3 text-xs font-mono-custom uppercase">• 5 Bloquinhos de Conjunciones:</h4>
+                                        
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs font-mono-custom">
+                                            
+                                            <div class="p-3.5 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1">1. Adição (Y → E)</strong>
+                                                <p class="text-inkSecondary">Usa-se <strong class="text-inkPrimary">E</strong> antes de palavras que iniciam com <em>i- / hi-</em>.</p>
+                                                <span class="text-emerald-700 block font-bold mt-1">✔ "Padre e hijo", "Aguja e hilo"</span>
+                                                <span class="text-inkSecondary text-[10px] block font-normal">Exceção ditongo hie-: "Agua y hielo"</span>
+                                            </div>
+
+                                            <div class="p-3.5 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1">2. Alternância (O → U)</strong>
+                                                <p class="text-inkSecondary">Usa-se <strong class="text-inkPrimary">U</strong> antes de palavras que iniciam com <em>o- / ho-</em>.</p>
+                                                <span class="text-emerald-700 block font-bold mt-1">✔ "Siete u ocho", "Mujer u hombre"</span>
+                                            </div>
+
+                                            <div class="p-3.5 bg-acid/30 rounded-xl border border-inkPrimary/20">
+                                                <strong class="text-inkPrimary block mb-1">3. Oposição (PERO vs SINO)</strong>
+                                                <p class="text-inkPrimary">PERO = mas/porém. SINO = senão/mas sim (após negação).</p>
+                                                <span class="text-inkPrimary block font-bold mt-1">✔ "No es azul sino verde"</span>
+                                            </div>
+
+                                            <div class="p-3.5 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1">4. Causa</strong>
+                                                <p class="text-inkSecondary"><em>porque, ya que, puesto que, como</em> (sempre no início de frase).</p>
+                                            </div>
+
+                                            <div class="p-3.5 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1">5. Consequência</strong>
+                                                <p class="text-inkSecondary"><em>así que, por lo tanto, luego</em> (portanto).</p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sub-bloco 2: Los 4 Pretéritos del Modo Indicativo -->
+                        <div id="subblock-esp-2" class="border border-hairline rounded-2xl overflow-hidden bg-white shadow-xs">
+                            <div onclick="toggleSubBlock('esp-2')" class="p-4 sm:p-5 bg-secondarySurface/50 hover:bg-secondarySurface cursor-pointer flex items-center justify-between transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" id="check-esp-2" onclick="event.stopPropagation(); toggleReviewed('esp-2')" class="w-4 h-4 rounded text-inkPrimary focus:ring-acid cursor-pointer">
+                                    <div>
+                                        <span class="text-[11px] font-mono-custom text-inkSecondary block">SUB-BLOCO 4.2</span>
+                                        <h3 class="text-base sm:text-lg font-medium text-inkPrimary">Los 4 Pretéritos del Modo Indicativo</h3>
+                                    </div>
+                                </div>
+                                <span id="arrow-esp-2" class="text-lg text-inkSecondary transition-transform">↓</span>
+                            </div>
+                            <div id="content-esp-2" class="accordion-content">
+                                <div class="accordion-inner p-5 sm:p-6 space-y-6 border-t border-hairline text-sm leading-relaxed text-inkPrimary">
+                                    
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 font-mono-custom text-xs">
+                                        
+                                        <!-- Pretérito 1 -->
+                                        <div class="p-4 bg-secondarySurface rounded-xl border border-hairline space-y-2">
+                                            <strong class="text-inkPrimary block text-sm font-bold">1. Pretérito Perfecto Compuesto</strong>
+                                            <p class="text-inkSecondary">Fórmula: HABER (presente: he, has, ha, hemos, habéis, han) + Participio (-ado/-ido).</p>
+                                            <div class="p-2 bg-surface rounded text-inkPrimary">
+                                                Tempo ABERTO ligado ao presente: <em>hoy, esta mañana, este año, ya, nunca</em>.
+                                            </div>
+                                        </div>
+
+                                        <!-- Pretérito 2 -->
+                                        <div class="p-4 bg-secondarySurface rounded-xl border border-hairline space-y-2">
+                                            <strong class="text-inkPrimary block text-sm font-bold">2. Pretérito Perfecto Simple (Indefinido)</strong>
+                                            <p class="text-inkSecondary">Verbo simples no passado (hablé, comí, fui, estuve).</p>
+                                            <div class="p-2 bg-surface rounded text-inkPrimary">
+                                                Tempo FECHADO / concluído: <em>ayer, anoche, la semana pasada, en 2020</em>.
+                                            </div>
+                                        </div>
+
+                                        <!-- Pretérito 3 -->
+                                        <div class="p-4 bg-secondarySurface rounded-xl border border-hairline space-y-2">
+                                            <strong class="text-inkPrimary block text-sm font-bold">3. Pretérito Imperfecto</strong>
+                                            <p class="text-inkSecondary">Terminações: -aba (hablaba) / -ía (comía). Irregulares: era, iba, veía.</p>
+                                            <div class="p-2 bg-surface rounded text-inkPrimary">
+                                                Hábitos no passado, descrições ou ação contínua interrompida: <em>siempre, antes, de niño</em>.
+                                            </div>
+                                        </div>
+
+                                        <!-- Pretérito 4 -->
+                                        <div class="p-4 bg-secondarySurface rounded-xl border border-hairline space-y-2">
+                                            <strong class="text-inkPrimary block text-sm font-bold">4. Pretérito Pluscuamperfecto</strong>
+                                            <p class="text-inkSecondary">Fórmula: HABÍA + Participio (había hablado).</p>
+                                            <div class="p-2 bg-surface rounded text-inkPrimary">
+                                                Passado do passado (ação anterior a outra ação passada).
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sub-bloco 3: Particípios Irregulares & Contraste Direto -->
+                        <div id="subblock-esp-3" class="border border-hairline rounded-2xl overflow-hidden bg-white shadow-xs">
+                            <div onclick="toggleSubBlock('esp-3')" class="p-4 sm:p-5 bg-secondarySurface/50 hover:bg-secondarySurface cursor-pointer flex items-center justify-between transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" id="check-esp-3" onclick="event.stopPropagation(); toggleReviewed('esp-3')" class="w-4 h-4 rounded text-inkPrimary focus:ring-acid cursor-pointer">
+                                    <div>
+                                        <span class="text-[11px] font-mono-custom text-inkSecondary block">SUB-BLOCO 4.3</span>
+                                        <h3 class="text-base sm:text-lg font-medium text-inkPrimary">Particípios Irregulares & Contraste Direto</h3>
+                                    </div>
+                                </div>
+                                <span id="arrow-esp-3" class="text-lg text-inkSecondary transition-transform">↓</span>
+                            </div>
+                            <div id="content-esp-3" class="accordion-content">
+                                <div class="accordion-inner p-5 sm:p-6 space-y-6 border-t border-hairline text-sm leading-relaxed text-inkPrimary">
+                                    
+                                    <div>
+                                        <h4 class="font-semibold text-inkPrimary mb-3 text-xs font-mono-custom uppercase">• Top 10 Particípios Irregulares (Proibido "abrido/escribido"):</h4>
+                                        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 font-mono-custom text-xs">
+                                            <div class="p-2 bg-secondarySurface rounded border border-hairline text-center">Abrir → <strong class="text-inkPrimary">abierto</strong></div>
+                                            <div class="p-2 bg-secondarySurface rounded border border-hairline text-center">Cubrir → <strong class="text-inkPrimary">cubierto</strong></div>
+                                            <div class="p-2 bg-secondarySurface rounded border border-hairline text-center">Decir → <strong class="text-inkPrimary">dicho</strong></div>
+                                            <div class="p-2 bg-secondarySurface rounded border border-hairline text-center">Escribir → <strong class="text-inkPrimary">escrito</strong></div>
+                                            <div class="p-2 bg-secondarySurface rounded border border-hairline text-center">Hacer → <strong class="text-inkPrimary">hecho</strong></div>
+                                            <div class="p-2 bg-secondarySurface rounded border border-hairline text-center">Morir → <strong class="text-inkPrimary">muerto</strong></div>
+                                            <div class="p-2 bg-secondarySurface rounded border border-hairline text-center">Poner → <strong class="text-inkPrimary">puesto</strong></div>
+                                            <div class="p-2 bg-secondarySurface rounded border border-hairline text-center">Romper → <strong class="text-inkPrimary">roto</strong></div>
+                                            <div class="p-2 bg-secondarySurface rounded border border-hairline text-center">Ver → <strong class="text-inkPrimary">visto</strong></div>
+                                            <div class="p-2 bg-secondarySurface rounded border border-hairline text-center">Volver → <strong class="text-inkPrimary">vuelto</strong></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="p-4 bg-inkPrimary text-white rounded-xl space-y-2 font-mono-custom text-xs">
+                                        <strong class="text-acid uppercase block">CONTRASTE DE 5 SEGUNDOS PARA PROVAS:</strong>
+                                        <ul class="space-y-1 text-white/90">
+                                            <li>• "Hoy <strong class="text-acid">he estudiado</strong> mucho." (Perfecto Compuesto)</li>
+                                            <li>• "Ayer <strong class="text-acid">estudié</strong> muito." (Perfecto Simple / Indefinido)</li>
+                                            <li>• "Cuando era joven <strong class="text-acid">estudiaba</strong> todos los días." (Imperfecto)</li>
+                                            <li>• "Cuando llegaste, ya <strong class="text-acid">había estudiado</strong>." (Pluscuamperfecto)</li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+
+                <!-- ============================================================== -->
+                <!-- 5. ARTES (2 SUB-BLOCOS) -->
+                <!-- ============================================================== -->
+                <section id="subject-artes" class="subject-card space-y-6 bg-surface border border-hairline rounded-[28px] p-6 sm:p-8 shadow-sm">
+                    <div class="border-b border-hairline pb-4 flex items-center justify-between">
+                        <div>
+                            <span class="text-xs font-mono-custom text-inkSecondary uppercase tracking-wider">DISCIPLINA 05</span>
+                            <h2 class="text-2xl sm:text-3xl font-medium text-inkPrimary">Artes</h2>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-acid text-xs font-mono-custom font-bold text-inkPrimary">2 Sub-blocos</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        
+                        <!-- Sub-bloco 1: Vanguardas Europeias -->
+                        <div id="subblock-artes-1" class="border border-hairline rounded-2xl overflow-hidden bg-white shadow-xs">
+                            <div onclick="toggleSubBlock('artes-1')" class="p-4 sm:p-5 bg-secondarySurface/50 hover:bg-secondarySurface cursor-pointer flex items-center justify-between transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" id="check-artes-1" onclick="event.stopPropagation(); toggleReviewed('artes-1')" class="w-4 h-4 rounded text-inkPrimary focus:ring-acid cursor-pointer">
+                                    <div>
+                                        <span class="text-[11px] font-mono-custom text-inkSecondary block">SUB-BLOCO 5.1</span>
+                                        <h3 class="text-base sm:text-lg font-medium text-inkPrimary">Vanguardas Europeias (Cubismo, Futurismo, Abstracionismo)</h3>
+                                    </div>
+                                </div>
+                                <span id="arrow-artes-1" class="text-lg text-inkSecondary transition-transform">↓</span>
+                            </div>
+                            <div id="content-artes-1" class="accordion-content">
+                                <div class="accordion-inner p-5 sm:p-6 space-y-6 border-t border-hairline text-sm leading-relaxed text-inkPrimary">
+                                    
+                                    <div>
+                                        <h4 class="font-semibold text-inkPrimary mb-3 text-xs font-mono-custom uppercase">• Os 3 Movimentos de Destaque em Bloquinhos:</h4>
+                                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono-custom text-xs">
+                                            
+                                            <div class="p-3.5 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1 text-sm">1. CUBISMO (1907)</strong>
+                                                <p class="text-inkSecondary">Geometrização da forma e múltiplos ângulos de visão simultâneos na tela.</p>
+                                                <ul class="mt-2 space-y-0.5 text-inkPrimary">
+                                                    <li>• <em>Analítico:</em> Decomposição e cores sóbrias.</li>
+                                                    <li>• <em>Sintético:</em> Colagens, letras e mais cor.</li>
+                                                    <li>• Nomes: Picasso (<em>Guernica</em>), Braque.</li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="p-3.5 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1 text-sm">2. FUTURISMO (1909)</strong>
+                                                <p class="text-inkSecondary">Elogio à velocidade, à máquina, à tecnologia e destruição do passado.</p>
+                                                <ul class="mt-2 space-y-0.5 text-inkPrimary">
+                                                    <li>• Linhas de força e dinamismo.</li>
+                                                    <li>• Nomes: Marinetti, Boccioni.</li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="p-3.5 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1 text-sm">3. ABSTRACIONISMO</strong>
+                                                <p class="text-inkSecondary">Ruptura total com a representação figurativa da realidade.</p>
+                                                <ul class="mt-2 space-y-0.5 text-inkPrimary">
+                                                    <li>• <em>Lírico / Sensível:</em> Formas livres (Kandinsky).</li>
+                                                    <li>• <em>Geométrico:</em> Linhas retas e cores primárias (Mondrian).</li>
+                                                </ul>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sub-bloco 2: Escola de Bauhaus (1919–1933) -->
+                        <div id="subblock-artes-2" class="border border-hairline rounded-2xl overflow-hidden bg-white shadow-xs">
+                            <div onclick="toggleSubBlock('artes-2')" class="p-4 sm:p-5 bg-secondarySurface/50 hover:bg-secondarySurface cursor-pointer flex items-center justify-between transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" id="check-artes-2" onclick="event.stopPropagation(); toggleReviewed('artes-2')" class="w-4 h-4 rounded text-inkPrimary focus:ring-acid cursor-pointer">
+                                    <div>
+                                        <span class="text-[11px] font-mono-custom text-inkSecondary block">SUB-BLOCO 5.2</span>
+                                        <h3 class="text-base sm:text-lg font-medium text-inkPrimary">Escola de Bauhaus (1919–1933)</h3>
+                                    </div>
+                                </div>
+                                <span id="arrow-artes-2" class="text-lg text-inkSecondary transition-transform">↓</span>
+                            </div>
+                            <div id="content-artes-2" class="accordion-content">
+                                <div class="accordion-inner p-5 sm:p-6 space-y-6 border-t border-hairline text-sm leading-relaxed text-inkPrimary">
+                                    
+                                    <div class="bg-acid p-4 rounded-xl text-inkPrimary font-mono-custom text-xs font-bold shadow-sm">
+                                        LEMA FUNDAMENTAL DE BAUHAUS: "A forma segue a função."
+                                    </div>
+
+                                    <div>
+                                        <h4 class="font-semibold text-inkPrimary mb-2">• Tópicos Chave para Questões:</h4>
+                                        <ul class="list-disc list-inside space-y-1 text-inkSecondary font-mono-custom text-xs">
+                                            <li><strong class="text-inkPrimary">União de Artes & Indústria:</strong> Integração entre arte pura, artesanato tradicional e produção industrial em série.</li>
+                                            <li><strong class="text-inkPrimary">Design Funcional:</strong> Eliminação de ornamentos desnecessários e foco na utilidade prática.</li>
+                                            <li><strong class="text-inkPrimary">Materiais Modernos:</strong> Utilização intensa de aço tubular, vidro plano e concreto armado.</li>
+                                            <li><strong class="text-inkPrimary">Fundador:</strong> Walter Gropius (Alemanha).</li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+
+                <!-- ============================================================== -->
+                <!-- 6. EDUCAÇÃO FÍSICA (2 SUB-BLOCOS) -->
+                <!-- ============================================================== -->
+                <section id="subject-edfisica" class="subject-card space-y-6 bg-surface border border-hairline rounded-[28px] p-6 sm:p-8 shadow-sm">
+                    <div class="border-b border-hairline pb-4 flex items-center justify-between">
+                        <div>
+                            <span class="text-xs font-mono-custom text-inkSecondary uppercase tracking-wider">DISCIPLINA 06</span>
+                            <h2 class="text-2xl sm:text-3xl font-medium text-inkPrimary">Educação Física</h2>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-acid text-xs font-mono-custom font-bold text-inkPrimary">2 Sub-blocos</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        
+                        <!-- Sub-bloco 1: Anatomia & Fisiologia do Sistema Muscular -->
+                        <div id="subblock-edfisica-1" class="border border-hairline rounded-2xl overflow-hidden bg-white shadow-xs">
+                            <div onclick="toggleSubBlock('edfisica-1')" class="p-4 sm:p-5 bg-secondarySurface/50 hover:bg-secondarySurface cursor-pointer flex items-center justify-between transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" id="check-edfisica-1" onclick="event.stopPropagation(); toggleReviewed('edfisica-1')" class="w-4 h-4 rounded text-inkPrimary focus:ring-acid cursor-pointer">
+                                    <div>
+                                        <span class="text-[11px] font-mono-custom text-inkSecondary block">SUB-BLOCO 6.1</span>
+                                        <h3 class="text-base sm:text-lg font-medium text-inkPrimary">Anatomia & Fisiologia do Sistema Muscular</h3>
+                                    </div>
+                                </div>
+                                <span id="arrow-edfisica-1" class="text-lg text-inkSecondary transition-transform">↓</span>
+                            </div>
+                            <div id="content-edfisica-1" class="accordion-content">
+                                <div class="accordion-inner p-5 sm:p-6 space-y-6 border-t border-hairline text-sm leading-relaxed text-inkPrimary">
+                                    
+                                    <div>
+                                        <h4 class="font-semibold text-inkPrimary mb-3 text-xs font-mono-custom uppercase">• Os 3 Tipos de Tecido Muscular em Bloquinhos:</h4>
+                                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono-custom text-xs">
+                                            <div class="p-3.5 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1 font-bold">1. Estriado Esquelético</strong>
+                                                <p class="text-inkSecondary">Voluntário, contração rápida e forte. Ligado aos ossos por tendões.</p>
+                                            </div>
+                                            <div class="p-3.5 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1 font-bold">2. Estriado Cardíaco</strong>
+                                                <p class="text-inkSecondary">Involuntário, rítmico. Exclusivo do coração (miocárdio).</p>
+                                            </div>
+                                            <div class="p-3.5 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1 font-bold">3. Liso (Visceral)</strong>
+                                                <p class="text-inkSecondary">Involuntário, contração lenta. Presente em órgãos internos e vasos.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="p-3.5 bg-secondarySurface rounded-xl border border-hairline space-y-1 font-mono-custom text-xs">
+                                        <strong class="text-inkPrimary">MECANISMO DA CONTRAÇÃO MUSCULAR:</strong>
+                                        <p class="text-inkSecondary">Estímulo nervoso → Liberação de <strong class="text-inkPrimary">Cálcio</strong> → Deslizamento das filamentos de <strong class="text-inkPrimary">Actina</strong> e <strong class="text-inkPrimary">Miosina</strong> com consumo de <strong class="text-inkPrimary">ATP</strong>.</p>
+                                    </div>
+
+                                    <div>
+                                        <h4 class="font-semibold text-inkPrimary mb-3 text-xs font-mono-custom uppercase">• Tipos de Fibras Musculares (Destaque Prova):</h4>
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono-custom text-xs">
+                                            <div class="p-3.5 bg-secondarySurface rounded-xl border border-hairline">
+                                                <strong class="text-inkPrimary block mb-1">Fibras Vermelhas (Tipo I / Lentas)</strong>
+                                                <p class="text-inkSecondary">Resistência aeróbica, usam oxigênio. Perfeitas para maratonistas e provas de longa duração.</p>
+                                            </div>
+                                            <div class="p-3.5 bg-acid/30 rounded-xl border border-inkPrimary/20">
+                                                <strong class="text-inkPrimary block mb-1">Fibras Brancas (Tipo II / Rápidas)</strong>
+                                                <p class="text-inkPrimary">Força explosiva, fadigam rápido. Perfeitas para tiros de 100m e levantamento de peso.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sub-bloco 2: Benefícios do Alongamento & Regra de Prova -->
+                        <div id="subblock-edfisica-2" class="border border-hairline rounded-2xl overflow-hidden bg-white shadow-xs">
+                            <div onclick="toggleSubBlock('edfisica-2')" class="p-4 sm:p-5 bg-secondarySurface/50 hover:bg-secondarySurface cursor-pointer flex items-center justify-between transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" id="check-edfisica-2" onclick="event.stopPropagation(); toggleReviewed('edfisica-2')" class="w-4 h-4 rounded text-inkPrimary focus:ring-acid cursor-pointer">
+                                    <div>
+                                        <span class="text-[11px] font-mono-custom text-inkSecondary block">SUB-BLOCO 6.2</span>
+                                        <h3 class="text-base sm:text-lg font-medium text-inkPrimary">Benefícios do Alongamento & Regra de Prova</h3>
+                                    </div>
+                                </div>
+                                <span id="arrow-edfisica-2" class="text-lg text-inkSecondary transition-transform">↓</span>
+                            </div>
+                            <div id="content-edfisica-2" class="accordion-content">
+                                <div class="accordion-inner p-5 sm:p-6 space-y-6 border-t border-hairline text-sm leading-relaxed text-inkPrimary">
+                                    
+                                    <div>
+                                        <h4 class="font-semibold text-inkPrimary mb-2">• Benefícios Musculares & Articulares:</h4>
+                                        <ul class="list-disc list-inside space-y-1 text-inkSecondary font-mono-custom text-xs">
+                                            <li>Aumento da elasticidade das fibras musculares e amplitude de movimento articular (ADM).</li>
+                                            <li>Redução da rigidez pós-treino e melhora da circulação sanguínea local.</li>
+                                            <li>Correção de desequilíbrios posturais e prevenção de encurtamentos musculares severos.</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="p-4 bg-inkPrimary text-white rounded-xl space-y-1 font-mono-custom text-xs">
+                                        <strong class="text-acid uppercase block">PEGADINHA CLÁSSICA DE PROVA:</strong>
+                                        <p class="text-white/90">
+                                            Alongamento <strong>estático intenso</strong> realizado imediatamente ANTES de treinos de força pura ou explosão pode REDUZIR temporariamente a potência máxima dos músculos! Prefere-se o <strong class="text-acid">alongamento dinâmico</strong> no aquecimento.
+                                        </p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-surface border-t border-hairline py-8 px-4 sm:px-8 mt-16 font-mono-custom text-xs text-inkSecondary">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+                <span class="font-bold text-inkPrimary">EDITAL.26</span>
+                <span>— Hub Analítico de Linguagens e Códigos</span>
+            </div>
+            <div>
+                Design System Editorial • Awwwards & FWA Inspired
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE QUIZ MODAL ("SIMULADO RELÂMPAGO") -->
+    <div id="quizModal" class="fixed inset-0 bg-inkPrimary/60 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-surface border border-hairline rounded-[28px] max-w-2xl w-full p-6 sm:p-8 space-y-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            
+            <button onclick="closeQuizModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-secondarySurface text-inkPrimary font-bold text-sm flex items-center justify-center hover:bg-acid">
+                ✕
+            </button>
+
+            <!-- Quiz Header -->
+            <div class="space-y-1 border-b border-hairline pb-4">
+                <div class="flex items-center gap-2 text-xs font-mono-custom text-inkSecondary">
+                    <span class="w-2 h-2 rounded-full bg-acid"></span>
+                    <span id="quizCounterText">Questão 1 de 8</span>
+                </div>
+                <h3 class="text-xl font-medium text-inkPrimary">Simulado Relâmpago — Linguagens & Códigos</h3>
+            </div>
+
+            <!-- Question Area -->
+            <div id="quizQuestionContainer" class="space-y-4">
+                <!-- Dynamic question injected here -->
+            </div>
+
+            <!-- Quiz Explanation / Feedback Box -->
+            <div id="quizFeedbackBox" class="hidden p-4 rounded-xl border text-xs font-mono-custom leading-relaxed space-y-2">
+                <!-- Dynamic explanation injected here -->
+            </div>
+
+            <!-- Quiz Controls -->
+            <div class="flex items-center justify-between pt-2 border-t border-hairline">
+                <button onclick="closeQuizModal()" class="text-xs text-inkSecondary hover:text-inkPrimary font-mono-custom">
+                    Fechar Simulado
+                </button>
+                <button id="nextQuizBtn" onclick="nextQuestion()" class="hidden px-5 py-2.5 rounded-full bg-inkPrimary text-acid font-semibold text-xs hover:bg-inkPrimary/90 spring-transform">
+                    Próxima Questão →
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Total Sub-blocks Count = 18
+        const TOTAL_SUBBLOCKS = 18;
+
+        // Sub-blocks list mapping
+        const ALL_SUBBLOCK_IDS = [
+            'lingua-1', 'lingua-2', 'lingua-3', 'lingua-4',
+            'lit-1', 'lit-2', 'lit-3', 'lit-4',
+            'ing-1', 'ing-2', 'ing-3',
+            'esp-1', 'esp-2', 'esp-3',
+            'artes-1', 'artes-2',
+            'edfisica-1', 'edfisica-2'
+        ];
+
+        // Search Index Database
+        const SEARCH_INDEX = [
+            { id: 'lingua-1', subject: 'lingua', title: 'Regência Nominal — Conceito & Classes Regentes', keywords: 'regencia nominal complemento nominal substantivos adjetivos adverbios' },
+            { id: 'lingua-2', subject: 'lingua', title: 'Regência Nominal na Prova — Sentido, Crase & Pronome Relativo', keywords: 'crase pronome relativo ansioso atento estranho simpatia acesso' },
+            { id: 'lingua-3', subject: 'lingua', title: 'Regência Verbal & Os 5 Verbos Camaleões', keywords: 'regencia verbal assistir aspirar visar implicar pagar perdoar esquecer lembrar' },
+            { id: 'lingua-4', subject: 'lingua', title: 'Nomenclatura Sintática & Regras Rígidas', keywords: 'vtd vti vtdi objeto direto objeto indireto pronomes obliquos preferir namorar' },
+            { id: 'lit-1', subject: 'lit', title: 'DNA do Realismo & Bases Científicas', keywords: 'realismo romantismo positivismo determinismo taine comte darwin' },
+            { id: 'lit-2', subject: 'lit', title: 'Realismo em Portugal — Linha do Tempo & Autores', keywords: 'questao coimbra eca de queiros cassino lisbonense crime do padre amaro primo basilio os maias' },
+            { lit: 'lit-3', subject: 'lit', title: 'Realismo no Brasil & Comparativo Portugal × Brasil', keywords: 'machado de assis bras cubas quincas borba raul pompeia ateneu' },
+            { id: 'lit-4', subject: 'lit', title: 'Obra Obrigatória — Dom Casmurro (1899)', keywords: 'dom casmurro bentinho capitu escobar olhos de ressaca ciume machado' },
+            { id: 'ing-1', subject: 'ing', title: 'Conditionals (Zero, First e Second)', keywords: 'conditionals zero first second conditional if clause virgula' },
+            { id: 'ing-2', subject: 'ing', title: 'Second Conditional & Regra do WERE', keywords: 'were rule second conditional if i were hypothetical present' },
+            { id: 'ing-3', subject: 'ing', title: 'Past Perfect (O Passado do Passado)', keywords: 'past perfect had participle already before when by the time' },
+            { id: 'esp-1', subject: 'esp', title: 'Las Conjunciones (eufonia y/e, o/u, pero/sino)', keywords: 'conjunciones espanhol y e o u pero sino eufonia' },
+            { id: 'esp-2', subject: 'esp', title: 'Los 4 Pretéritos del Modo Indicativo', keywords: 'preteritos perfecto compuesto indefinido imperfecto pluscuamperfecto haber' },
+            { id: 'esp-3', subject: 'esp', title: 'Particípios Irregulares & Contraste Direto', keywords: 'participios irregulares abierto dicho escrito hecho puesto roto visto vuelto' },
+            { id: 'artes-1', subject: 'artes', title: 'Vanguardas Europeias (Cubismo, Futurismo, Abstracionismo)', keywords: 'vanguardas cubismo picasso guernica futurismo boccioni abstracionismo kandinsky' },
+            { id: 'artes-2', subject: 'artes', title: 'Escola de Bauhaus (1919–1933)', keywords: 'bauhaus a forma segue a funcao walter gropius design industrial minimalismo' },
+            { id: 'edfisica-1', subject: 'edfisica', title: 'Anatomia & Fisiologia Muscular', keywords: 'musculos estriado esqueletico cardiaco liso actina miosina calcio fibras vermelhas brancas' },
+            { id: 'edfisica-2', subject: 'edfisica', title: 'Benefícios do Alongamento & Regra de Prova', keywords: 'alongamento adm amplitude de movimento alongamento dinamico estatico lesao' }
+        ];
+
+        // Quiz Questions Data (8 Questions)
+        const QUIZ_QUESTIONS = [
+            {
+                subject: 'Análise Linguística',
+                question: 'Na regência da norma-padrão da Língua Portuguesa, assinale a opção inteiramente CORRETA:',
+                options: [
+                    'A) O filme que assistimos ontem era excelente.',
+                    'B) O cargo a que o candidato está apto exige dedicação.',
+                    'C) Prefiro mais estudar literatura do que gramática tradicional.',
+                    'D) O professor implicou com a turma e implicou em demissão.'
+                ],
+                correct: 1,
+                explanation: 'A opção B está perfeita! O adjetivo "apto" exige a preposição "A" (apto A algo), que foi deslocada corretamente para antes do pronome relativo "que" (a que). A) Incorreto: assistir (ver) exige "A" (ao qual assistimos). C) Incorreto: preferir não aceita "mais... do que" (prefiro X a Y). D) Incorreto: implicar (acarretar) é VTD e não aceita "em".'
+            },
+            {
+                subject: 'Literatura',
+                question: 'Em relação ao Realismo e à obra Dom Casmurro (1899), assinale a afirmativa correta:',
+                options: [
+                    'A) A narrativa comprova de forma irrefutável o adultério cometido por Capitu.',
+                    'B) Bento Santiago é um narrador neutro e objetivo, típico da 3ª pessoa realista.',
+                    'C) O foco da obra reside na construção da obsessão ciumenta através de um narrador em 1ª pessoa não confiável.',
+                    'D) A obra marca o início do Romantismo urbano no Segundo Reinado.'
+                ],
+                correct: 2,
+                explanation: 'Opção C correta! Machado de Assis constrói a narrativa em 1ª pessoa sob o olhar enciumado de Bento Santiago, criando uma ambiguidade intencional em que o leitor nunca tem provas objetivas do adultério.'
+            },
+            {
+                subject: 'Inglês',
+                question: 'Select the grammatically correct sentence in Second Conditional:',
+                options: [
+                    'A) If I was you, I would study grammar.',
+                    'B) If I were you, I would study grammar.',
+                    'C) If I would be you, I studied grammar.',
+                    'D) If I am you, I will study grammar.'
+                ],
+                correct: 1,
+                explanation: 'Opção B correta! Na Segunda Condicional (Second Conditional) em inglês, a norma gramatical exige o uso de WERE para todas as pessoas gramaticais com o verbo to be (If I WERE you, If she WERE here).'
+            },
+            {
+                subject: 'Espanhol',
+                question: 'Em espanhol, assinale a alternativa que aplica corretamente as regras de eufonia e conjunção:',
+                options: [
+                    'A) Fernando y Ignacio salieron juntos.',
+                    'B) Necesitamos aguja y hilo para coser.',
+                    'C) Es un problema de siete u ocho personas.',
+                    'D) No quiero agua y hielo.'
+                ],
+                correct: 2,
+                explanation: 'Opção C correta! A conjunção alternativa "o" vira "u" antes de palavras iniciadas por "o-" ou "ho-" (siete u ocho). A e B estão erradas pois "y" deve virar "e" antes de "i/hi" (padre e hijo).'
+            },
+            {
+                subject: 'Artes',
+                question: 'Qual o princípio fundamental que norteou a produção de objetos e arquitetura na Escola de Bauhaus (1919–1933)?',
+                options: [
+                    'A) A ornamentação excessiva valoriza a arte pura.',
+                    'B) A forma segue a função.',
+                    'C) O passado clássico deve ser imitado fielmente.',
+                    'D) A velocidade é a única beleza do século XX.'
+                ],
+                correct: 1,
+                explanation: 'Opção B correta! O lema célebre da Bauhaus foi "A forma segue a função", priorizando o minimalismo funcional, a ausência de adornos inúteis e a produção industrial.'
+            },
+            {
+                subject: 'Educação Física',
+                question: 'Sobre o sistema muscular e a prática de exercícios físicos, assinale a afirmativa verdadeira:',
+                options: [
+                    'A) As fibras musculares brancas (Tipo II) possuem alta resistência aeróbica para maratonas.',
+                    'B) O músculo estriado cardíaco possui contração voluntária e lenta.',
+                    'C) Fibras musculares lentas (Tipo I) utilizam oxigênio e são resistentes à fadiga.',
+                    'D) Alongamento estático intenso antes de cargas máximas aumenta a potência explosiva.'
+                ],
+                correct: 2,
+                explanation: 'Opção C correta! As fibras de Tipo I (vermelhas / lentas) são ricas em mioglobina e mitocôndrias, utilizando oxigênio para manter resistência em provas longas.'
+            },
+            {
+                subject: 'Análise Linguística',
+                question: 'Assinale a alternativa que apresenta erro de regência verbal:',
+                options: [
+                    'A) O médico assistiu o doente com presteza.',
+                    'B) O jovem aspirava ao cargo de gestor.',
+                    'C) Chegamos no colégio bem cedo.',
+                    'D) Esqueci-me das chaves do escritório.'
+                ],
+                correct: 2,
+                explanation: 'Opção C contém erro! Verbos de movimento como "chegar" exigem a preposição "A" na norma culta (Chegamos AO colégio, não "no colégio").'
+            },
+            {
+                subject: 'Espanhol',
+                question: 'Identifique a frase em espanhol com o particípio irregular grafado CORRETAMENTE:',
+                options: [
+                    'A) El libro fue escribido por un autor famoso.',
+                    'B) He abierto la ventana esta mañana.',
+                    'C) Juan ha ponido el abrigo en la silla.',
+                    'D) La carta fue rompedora y vertida.'
+                ],
+                correct: 1,
+                explanation: 'Opção B correta! O particípio de "abrir" é "abierto" (He abierto). Os particípios "escribido" e "ponido" são erros gravíssimos em espanhol (o correto é escrito e puesto).'
+            }
+        ];
+
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+
+        // Initialize App on Load
+        window.addEventListener('DOMContentLoaded', () => {
+            loadReviewedState();
+            updateProgressBar();
+        });
+
+        // LocalStorage logic for reviewed sub-blocks
+        function getReviewedState() {
+            try {
+                return JSON.parse(localStorage.getItem('edital26_reviewed')) || {};
+            } catch (e) {
+                return {};
+            }
+        }
+
+        function loadReviewedState() {
+            const state = getReviewedState();
+            ALL_SUBBLOCK_IDS.forEach(id => {
+                const checkbox = document.getElementById(`check-${id}`);
+                if (checkbox) {
+                    checkbox.checked = !!state[id];
+                }
+            });
+        }
+
+        function toggleReviewed(id) {
+            const state = getReviewedState();
+            state[id] = !state[id];
+            localStorage.setItem('edital26_reviewed', JSON.stringify(state));
+            loadReviewedState();
+            updateProgressBar();
+        }
+
+        function updateProgressBar() {
+            const state = getReviewedState();
+            const reviewedCount = Object.keys(state).filter(k => state[k]).length;
+            const percentage = Math.round((reviewedCount / TOTAL_SUBBLOCKS) * 100);
+
+            const progressBar = document.getElementById('heroProgressBar');
+            const progressText = document.getElementById('heroProgressText');
+
+            if (progressBar && progressText) {
+                progressBar.style.width = `${percentage}%`;
+                progressText.textContent = `${reviewedCount}/${TOTAL_SUBBLOCKS} revisados (${percentage}%)`;
+            }
+        }
+
+        // View Navigation Logic
+        function navigateToSubject(subjectId) {
+            const homeView = document.getElementById('homeView');
+            const subjectView = document.getElementById('subjectDetailView');
+            const subjectCards = document.querySelectorAll('.subject-card');
+
+            if (!subjectId) return;
+
+            homeView.classList.add('hidden');
+            subjectView.classList.remove('hidden');
+
+            subjectCards.forEach(card => {
+                if (subjectId === 'all' || card.id === `subject-${subjectId}`) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            // Update header tag title
+            const tag = document.getElementById('currentSubjectTitleTag');
+            const titles = {
+                'lingua': 'Análise Linguística',
+                'lit': 'Literatura (Realismo)',
+                'ing': 'Inglês Nível 2',
+                'esp': 'Espanhol',
+                'artes': 'Artes',
+                'edfisica': 'Educação Física',
+                'all': 'Todas as Disciplinas'
+            };
+            if (tag) tag.textContent = titles[subjectId] || 'Exibindo Matéria';
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openAllSubjectsView() {
+            navigateToSubject('all');
+        }
+
+        function backToHomeView() {
+            document.getElementById('homeView').classList.remove('hidden');
+            document.getElementById('subjectDetailView').classList.add('hidden');
+            const navSelect = document.getElementById('subjectNavSelect');
+            if (navSelect) navSelect.value = "";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function navigateToSubBlock(subblockId) {
+            const item = SEARCH_INDEX.find(x => x.id === subblockId);
+            if (!item) return;
+
+            navigateToSubject(item.subject);
+            setTimeout(() => {
+                const subEl = document.getElementById(`subblock-${subblockId}`);
+                if (subEl) {
+                    subEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    openSubBlock(subblockId);
+                }
+            }, 300);
+        }
+
+        // Accordion expand/collapse
+        function toggleSubBlock(id) {
+            const content = document.getElementById(`content-${id}`);
+            const arrow = document.getElementById(`arrow-${id}`);
+            
+            if (content.classList.contains('open')) {
+                content.classList.remove('open');
+                if (arrow) arrow.style.transform = 'rotate(0deg)';
+            } else {
+                content.classList.add('open');
+                if (arrow) arrow.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        function openSubBlock(id) {
+            const content = document.getElementById(`content-${id}`);
+            const arrow = document.getElementById(`arrow-${id}`);
+            if (content && !content.classList.contains('open')) {
+                content.classList.add('open');
+                if (arrow) arrow.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        function toggleExpandAllSubBlocks(expand) {
+            ALL_SUBBLOCK_IDS.forEach(id => {
+                const content = document.getElementById(`content-${id}`);
+                const arrow = document.getElementById(`arrow-${id}`);
+                if (content) {
+                    if (expand) {
+                        content.classList.add('open');
+                        if (arrow) arrow.style.transform = 'rotate(180deg)';
+                    } else {
+                        content.classList.remove('open');
+                        if (arrow) arrow.style.transform = 'rotate(0deg)';
+                    }
+                }
+            });
+        }
+
+        // Scroll Helper
+        function scrollToSection(id) {
+            backToHomeView();
+            setTimeout(() => {
+                const el = document.getElementById(id);
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+
+        // Search Engine Functionality
+        function handleSearch(query) {
+            const dropdown = document.getElementById('searchResultsDropdown');
+            const cleanQuery = query.trim().toLowerCase();
+
+            if (!cleanQuery) {
+                dropdown.classList.add('hidden');
+                return;
+            }
+
+            const matches = SEARCH_INDEX.filter(item => 
+                item.title.toLowerCase().includes(cleanQuery) || 
+                item.keywords.toLowerCase().includes(cleanQuery)
+            );
+
+            if (matches.length === 0) {
+                dropdown.innerHTML = `
+                    <div class="p-4 text-xs text-inkSecondary text-center font-mono-custom">
+                        Nenhum tópico encontrado para "${query}".
+                    </div>
+                `;
+            } else {
+                dropdown.innerHTML = matches.map(m => `
+                    <div onclick="navigateToSubBlock('${m.id}')" class="p-3 hover:bg-secondarySurface cursor-pointer flex items-center justify-between group">
+                        <div>
+                            <span class="text-[10px] font-mono-custom text-inkSecondary uppercase">${m.subject}</span>
+                            <h5 class="text-xs font-semibold text-inkPrimary group-hover:text-inkPrimary">${m.title}</h5>
+                        </div>
+                        <span class="text-xs text-inkSecondary font-mono-custom group-hover:text-acid font-bold">Ir →</span>
+                    </div>
+                `).join('');
+            }
+
+            dropdown.classList.remove('hidden');
+        }
+
+        function triggerSearchJump() {
+            const input = document.getElementById('heroSearchInput');
+            if (input && input.value) {
+                const cleanQuery = input.value.trim().toLowerCase();
+                const match = SEARCH_INDEX.find(item => 
+                    item.title.toLowerCase().includes(cleanQuery) || 
+                    item.keywords.toLowerCase().includes(cleanQuery)
+                );
+                if (match) {
+                    navigateToSubBlock(match.id);
+                    document.getElementById('searchResultsDropdown').classList.add('hidden');
+                }
+            }
+        }
+
+        // Quiz Modal Logic
+        function openQuizModal() {
+            currentQuizIndex = 0;
+            quizScore = 0;
+            renderQuizQuestion();
+            document.getElementById('quizModal').classList.remove('hidden');
+        }
+
+        function closeQuizModal() {
+            document.getElementById('quizModal').classList.add('hidden');
+        }
+
+        function renderQuizQuestion() {
+            const q = QUIZ_QUESTIONS[currentQuizIndex];
+            const container = document.getElementById('quizQuestionContainer');
+            const counter = document.getElementById('quizCounterText');
+            const feedbackBox = document.getElementById('quizFeedbackBox');
+            const nextBtn = document.getElementById('nextQuizBtn');
+
+            counter.textContent = `Questão ${currentQuizIndex + 1} de ${QUIZ_QUESTIONS.length} • ${q.subject}`;
+            feedbackBox.classList.add('hidden');
+            nextBtn.classList.add('hidden');
+
+            container.innerHTML = `
+                <div class="space-y-3">
+                    <p class="text-sm font-medium text-inkPrimary leading-relaxed">${q.question}</p>
+                    <div class="space-y-2 pt-2">
+                        ${q.options.map((opt, idx) => `
+                            <button onclick="checkAnswer(${idx})" class="quiz-opt-btn w-full text-left p-3 rounded-xl border border-hairline hover:border-inkPrimary text-xs font-mono-custom text-inkPrimary hover:bg-secondarySurface transition-all flex items-center justify-between">
+                                <span>${opt}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function checkAnswer(selectedIdx) {
+            const q = QUIZ_QUESTIONS[currentQuizIndex];
+            const optBtns = document.querySelectorAll('.quiz-opt-btn');
+            const feedbackBox = document.getElementById('quizFeedbackBox');
+            const nextBtn = document.getElementById('nextQuizBtn');
+
+            optBtns.forEach((btn, idx) => {
+                btn.disabled = true;
+                if (idx === q.correct) {
+                    btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'font-bold');
+                } else if (idx === selectedIdx && selectedIdx !== q.correct) {
+                    btn.classList.add('bg-red-100', 'border-red-400', 'text-red-900');
+                }
+            });
+
+            if (selectedIdx === q.correct) {
+                quizScore++;
+                feedbackBox.className = "p-4 rounded-xl border border-emerald-300 bg-emerald-50 text-emerald-900 text-xs font-mono-custom leading-relaxed space-y-1";
+                feedbackBox.innerHTML = `<strong>✔ CORRETO!</strong><p>${q.explanation}</p>`;
+            } else {
+                feedbackBox.className = "p-4 rounded-xl border border-red-300 bg-red-50 text-red-900 text-xs font-mono-custom leading-relaxed space-y-1";
+                feedbackBox.innerHTML = `<strong>✖ INCORRETO.</strong><p>${q.explanation}</p>`;
+            }
+
+            feedbackBox.classList.remove('hidden');
+            nextBtn.classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentQuizIndex++;
+            if (currentQuizIndex < QUIZ_QUESTIONS.length) {
+                renderQuizQuestion();
+            } else {
+                // Quiz Finish State
+                const container = document.getElementById('quizQuestionContainer');
+                const counter = document.getElementById('quizCounterText');
+                const feedbackBox = document.getElementById('quizFeedbackBox');
+                const nextBtn = document.getElementById('nextQuizBtn');
+
+                counter.textContent = "RESULTADO FINAL DO SIMULADO";
+                feedbackBox.classList.add('hidden');
+                nextBtn.classList.add('hidden');
+
+                const percentage = Math.round((quizScore / QUIZ_QUESTIONS.length) * 100);
+
+                container.innerHTML = `
+                    <div class="text-center py-6 space-y-4 font-mono-custom">
+                        <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-acid text-inkPrimary text-3xl font-extrabold">
+                            ${quizScore}/${QUIZ_QUESTIONS.length}
+                        </div>
+                        <h4 class="text-xl font-bold text-inkPrimary">Você concluiu o Simulado Relâmpago!</h4>
+                        <p class="text-xs text-inkSecondary max-w-md mx-auto">
+                            Sua taxa de acerto foi de <strong>${percentage}%</strong>. Continue revisando os sub-blocos e fixando os conceitos do edital!
+                        </p>
+                        <button onclick="openQuizModal()" class="px-6 py-3 rounded-full bg-inkPrimary text-acid text-xs font-bold hover:bg-inkPrimary/90 spring-transform inline-block">
+                            Refazer Simulado ⚡
+                        </button>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
